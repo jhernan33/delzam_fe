@@ -44,22 +44,24 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+// import HelloWorld from './components/HelloWorld';
+import MenuVue  from './components/Menu.vue';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    // HelloWorld,
+    MenuVue,
   },
 
-  data: () => ({
-    //
-    getImgUrl(pet) {
-      var images = require.context('/src/assets/', false, /\.png$/)
-      return images('./' + pet + ".png")
-    }
-  }),
+  // data: () => ({
+  //   //
+  //   getImgUrl(pet) {
+  //     var images = require.context('/src/assets/', false, /\.png$/)
+  //     return images('./' + pet + ".png")
+  //   }
+  // }),
 };
 
 </script>
