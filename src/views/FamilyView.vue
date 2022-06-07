@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-row class="list px-3 mx-auto">
     <v-col cols="12" md="8">
       <v-text-field v-model="title" label="Buscar por Descripcion"></v-text-field>
@@ -49,6 +49,53 @@
       </v-card>
     </v-col>
   </v-row>
+</template> -->
+
+<template>
+<v-card>
+  <v-card-title>
+    Familia de Productos
+    <v-spacer></v-spacer>
+    <v-text-field 
+      v-model="title"
+      append-icon="mdi-magnify"
+      label="Buscar por Descripcion"
+      single-line
+      hide-details
+      >
+    </v-text-field>
+    <v-spacer></v-spacer>
+    <v-btn color="success" to="/add" elevation="8">
+      Nuevo
+    </v-btn>
+  </v-card-title>
+  <v-data-table
+    :headers="headers"
+    :items="family"
+    :hide-default-footer="false"
+    :sort-by="['id','desc_fami','abae_fami']"
+      :page="page"
+      :pageCount="numberOfPages"
+      :options.sync="options"
+      :server-items-length="totalFamily"
+      :loading="loading"
+      loading-text="Cargando.. Espere por favor"
+      :footer-props="{
+        showFirstLastPage: true,
+        firstIcon: 'mdi-skip-previous-circle',
+        lastIcon: 'mdi-skip-next-circle',
+        prevIcon: 'mdi-arrow-left-circle',
+        nextIcon: 'mdi-arrow-right-circle'
+      }"
+      :items-per-page="5"
+      class="elevation-1"
+  >
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon color="warning" small class="mr-2" @click="editNatural(item.id)">mdi-pencil</v-icon>
+      <v-icon color="error" small @click="deleteNatural(item.id)">mdi-delete</v-icon>
+    </template>
+  </v-data-table>
+</v-card>
 </template>
 
 <script>
@@ -57,10 +104,10 @@ export default {
   name: "family-list",
   data() {
     return {
-      natural: [],
+      family: [],
       title: "",
       page: 1,
-      totalNatural: 0,
+      totalFamily: 0,
       numberOfPages: 0,
       options: {},
       loading: true,
@@ -93,8 +140,8 @@ export default {
       FamilyDataService.getAll(page,itemsPerPage)
         .then((response) => {
           this.loading = false;
-          this.natural = response.data.results.map(this.getDisplayFamily);
-          this.totalNatural = response.data.count;
+          this.family = response.data.results.map(this.getDisplayFamily);
+          this.totalFamily = response.data.count;
           this.numberOfPages = response.data.last_page;
           //pageNumber = response.data.per_page;
           //console.log(response.data);
