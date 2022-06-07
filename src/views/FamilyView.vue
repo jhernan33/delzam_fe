@@ -1,56 +1,3 @@
-<!-- <template>
-  <v-row class="list px-3 mx-auto">
-    <v-col cols="12" md="8">
-      <v-text-field v-model="title" label="Buscar por Descripcion"></v-text-field>
-    </v-col>
-
-    <v-col cols="12" md="4">
-      <v-btn color="primary" large @click="searchTitle">
-        Buscar
-      </v-btn>
-    </v-col>
-
-    <v-col cols="12" sm="12">
-      <v-card class="mx-auto" tile>
-        <v-card-title>Familia de Productos
-          <v-card-actions v-if="natural.length > 0">
-          <v-btn large color="primary" to="/add">
-            Nuevo
-          </v-btn>
-        </v-card-actions>
-        </v-card-title>
-
-        <v-data-table
-          dense
-          :headers="headers"
-          :items="natural"
-          :hide-default-footer="false"
-          :sort-by="['cedu_pena','seno_pena','prap_pena']"
-          :page="page"
-          :pageCount="numberOfPages"
-          :options.sync="options"
-          :server-items-length="totalNatural"
-          :loading="loading"
-          :footer-props="{
-            showFirstLastPage: true,
-            firstIcon: 'mdi-skip-previous-circle',
-            lastIcon: 'mdi-skip-next-circle',
-            prevIcon: 'mdi-arrow-left-circle',
-            nextIcon: 'mdi-arrow-right-circle'
-          }"
-        >
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-icon color="warning" small class="mr-2" @click="editNatural(item.id)">mdi-pencil</v-icon>
-            <v-icon color="error" small @click="deleteNatural(item.id)">mdi-delete</v-icon>
-          </template>
-        </v-data-table>
-
-        
-      </v-card>
-    </v-col>
-  </v-row>
-</template> -->
-
 <template>
 <v-card>
   <v-card-title>
@@ -65,7 +12,9 @@
       >
     </v-text-field>
     <v-spacer></v-spacer>
-    <v-btn color="success" to="/add" elevation="8">
+    <v-btn 
+      color="primary"
+      to="/add" elevation="8">
       Nuevo
     </v-btn>
   </v-card-title>

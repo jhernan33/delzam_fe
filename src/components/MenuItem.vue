@@ -1,8 +1,11 @@
 <template>
-  <v-card
-    class="mx-auto"
-    width="300"
-  >
+  <div class="sm-12 sm-12">
+
+  <v-card>
+    <v-navigation-drawer
+        permanent
+      >
+  
     <v-list>
       <v-list-item>
         <v-list-item-icon>
@@ -38,7 +41,9 @@
       </v-list-item>
       </v-list-group>
     </v-list>
+    </v-navigation-drawer>
   </v-card>
+  </div>
 </template>
 
 <script>
