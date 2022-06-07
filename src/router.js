@@ -12,5 +12,17 @@ export default new Router({
             name: "menuItem",
             component: () => import("./components/MenuItem")
         },
+        {
+            path: '/about',
+            alias: "/about",
+            name: "about",
+            component: () => import("./views/AboutView")
+        },
+        {
+            path: '/family',
+            alias: "/family",
+            name: "family",
+            component: () => import("./views/FamilyView")
+        }
     ]
 });

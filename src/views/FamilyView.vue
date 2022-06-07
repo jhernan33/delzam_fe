@@ -1,7 +1,7 @@
 <template>
-  <v-row align="center" class="list px-3 mx-auto">
+  <v-row class="list px-3 mx-auto">
     <v-col cols="12" md="8">
-      <v-text-field v-model="title" label="Buscar por cedula o Nombre"></v-text-field>
+      <v-text-field v-model="title" label="Buscar por Descripcion"></v-text-field>
     </v-col>
 
     <v-col cols="12" md="4">
@@ -12,7 +12,7 @@
 
     <v-col cols="12" sm="12">
       <v-card class="mx-auto" tile>
-        <v-card-title>Personas Naturales
+        <v-card-title>Familia de Productos
           <v-card-actions v-if="natural.length > 0">
           <v-btn large color="primary" to="/add">
             Nuevo
@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import NaturalDataService from "../services/NaturalDataService";
+import FamilyDataService from "../services/FamilyDataService";
 export default {
-  name: "natural-list",
+  name: "family-list",
   data() {
     return {
       natural: [],
@@ -65,9 +65,10 @@ export default {
       options: {},
       loading: true,
       headers: [
-        { text: "CEDULA", align: "start", sortable: false, value: "id" },
-        { text: "NOMBRE(S)", value: "seno_pena", sortable: false },
-        { text: "APELLIDO(S)", value: "prap_pena", sortable: false },
+        { text: "ID", align: "start", sortable: false, value: "id" },
+        { text: "DESCRIPCION", value: "desc_fami", sortable: false },
+        { text: "ABREVIATAURA", value: "abae_fami", sortable: false },
+        { text: "AGRUPA", value: "agru_fami", sortable: false },
         { text: "ACCIONES", value: "actions", sortable: false },
       ],
     };
@@ -75,13 +76,13 @@ export default {
   watch:{
     options:{
       handler(){
-        this.listadoNatural();
+        this.listadoFamily();
       },
     },
     //deep: true,
   },
   methods: {
-    listadoNatural() {
+    listadoFamily() {
       this.loading = true;
       //console.log(this.options);
       const { page, itemsPerPage} = this.options;
@@ -89,10 +90,10 @@ export default {
        // let pageNumber = page -1;
       // console.log(pageNumber);
 
-      NaturalDataService.getAll(page,itemsPerPage)
+      FamilyDataService.getAll(page,itemsPerPage)
         .then((response) => {
           this.loading = false;
-          this.natural = response.data.results.map(this.getDisplayNatural);
+          this.natural = response.data.results.map(this.getDisplayFamily);
           this.totalNatural = response.data.count;
           this.numberOfPages = response.data.last_page;
           //pageNumber = response.data.per_page;
@@ -104,11 +105,11 @@ export default {
     },
 
     refreshList() {
-      this.listadoNatural();
+      this.listadoFamily();
     },
 
     removeAllNatural() {
-      NaturalDataService.deleteAll()
+      FamilyDataService.deleteAll()
         .then((response) => {
           console.log(response.data);
           this.refreshList();
@@ -119,10 +120,10 @@ export default {
     },
 
     searchTitle() {
-      NaturalDataService.findByTitle(this.title)
+      FamilyDataService.findByTitle(this.title)
         .then((response) => {
           console.log(response.data.results);
-          this.natural = response.data.results.map(this.getDisplayNatural);
+          this.natural = response.data.results.map(this.getDisplayFamily());
         })
         .catch((e) => {
           console.log(e);
@@ -134,7 +135,7 @@ export default {
     },
 
     deleteNatural(id) {
-      NaturalDataService.delete(id)
+      FamilyDataService.delete(id)
         .then(() => {
           this.refreshList();
         })
@@ -143,22 +144,17 @@ export default {
         });
     },
 
-    getDisplayNatural(Object) {
+    getDisplayFamily(Object) {
       return {
         id: Object.id,
-        cedu_pena: Object.cedu_pena,
-        prno_pena: Object.prno_pena,
-        // seno_pena: Object.seno_pena,
-        // prap_pena: Object.prap_pena,
-        seap_pena: Object.seap_pena,
-        sexo_pena: Object.sexo_pena,
-        seno_pena: Object.nombre_completo.length > 30 ? Object.nombre_completo.substr(0, 30) + "..." : Object.nombre_completo,
-        prap_pena: Object.apellido_completo.length > 30 ? Object.apellido_completo.substr(0, 30) + "..." : Object.apellido_completo,
+        desc_fami: Object.desc_fami,
+        abae_fami: Object.abae_fami,
+        agru_fami: Object.agru_fami,
       };
     },
   },
   mounted() {
-    this.listadoNatural();
+    this.listadoFamily();
   },
 };
 </script>
@@ -168,3 +164,4 @@ export default {
   max-width: 750px;
 }
 </style>
+

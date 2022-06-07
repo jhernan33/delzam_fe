@@ -1,64 +1,60 @@
-<div id="app">
-    <v-app>
-        <v-navigation-drawer app dark class="primary" v-model="drawer">
-            <v-list>
-                <v-list-item>
-                    <v-list-item-content>
-                        <v-list-item-title class="title">
-                            <span class="font-weight-bold">Al-Mehmood</span>
-                        </v-list-item-title>
-                        <v-list-item-subtitle>Transport Company</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-group no-action v-for='navLink in navLinks' :key="navLink.text">
-                    <v-list-item slot='activator' :to="navLink.route">
-                        <v-list-item-icon>
-                            <v-icon>{{ navLink.icon }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>{{ navLink.text }}</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item v-for='sub in navLink.subLinks' :key="sub.text">
-                        <v-list-item-title :to="sub.route">{{ sub.text }}</v-list-item-title>
-                    </v-list-item>
-                </v-list-group>
-            </v-list>
-        </v-navigation-drawer>
-    </v-app>
-</div>
+<template>
+  <v-card
+    class="mx-auto"
+    width="300"
+  >
+    <v-list>
+      <v-list-item>
+        <v-list-item-icon>
+          <v-icon>mdi-home</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-title>Principal</v-list-item-title>
+      </v-list-item>
+
+      <v-list-group
+        :value="true"
+        prepend-icon="mdi-account-circle"
+      >
+
+      <template v-slot:activator>
+        <v-list-item-content>
+          <v-list-item-title>Archivo</v-list-item-title>
+        </v-list-item-content>
+      </template>
+
+      <v-list-item
+        v-for="([title, icon, to], i) in files"
+        :key="i"
+        link
+      >
+        <v-list-item link router :to="to">
+          <v-list-item-icon>
+              <v-icon v-text="icon"></v-icon>
+            </v-list-item-icon>
+          
+          <v-list-item-title v-text="title"></v-list-item-title>
+        </v-list-item>
+      </v-list-item>
+      </v-list-group>
+    </v-list>
+  </v-card>
+</template>
+
 <script>
-new Vue({
-    el: '#app',
-    vuetify: new Vuetify(),
-    data() {
-        return {
-            drawer: true,
-    
-            navLinks: [
-                { icon: "dashboard", text: "Dashboard", route: "/" },
-                { icon: "star", text: "Ratings", route: "/ratings" },
-                {
-                    icon: "people",
-                    text: "Drivers",
-                    route: "/drivers",
-                    subLinks: [
-                        { text: "Add Driver", route: "/drivers/add" },
-                        { text: "Add Driver", route: "/drivers/add" }
-                    ]
-                },
-    
-                {
-                    icon: "person_outline",
-                    text: "Manager",
-                    route: "/managers",
-                    subLinks: [
-                        { text: "Add Manager", route: "/managers/add" },
-                        { text: "Managers", route: "/managers" }
-                    ]
-                },
-                { icon: "person", text: "Manage Users", route: "/users" }
-            ]
-        }
-    }
-})
+  export default {
+    data: () => ({
+      files: [
+        ['Familia',     'mdi-human-male-male','/Family'],
+        ['SubFamilia',  'mdi-human-male-female-child','/subfamily'],
+        ['Producto',    'mdi-package-variant','/product']
+      ],
+      cruds: [
+        ['Create', 'mdi-plus-outline'],
+        ['Read', 'mdi-file-outline'],
+        ['Update', 'mdi-update'],
+        ['Delete', 'mdi-delete'],
+      ],
+    }),
+  }
 </script>
