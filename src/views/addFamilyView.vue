@@ -45,17 +45,17 @@
         
       </v-list-item-content>
 
-      <v-list-item-avatar
+      <!-- <v-list-item-avatar
         tile
         size="80"
         color="grey"
-      ></v-list-item-avatar>
+      ></v-list-item-avatar> -->
     </v-list-item>
 
     
       <v-card-actions class="mb-3">
         
-        <v-dialog persistent v-model="dialog" max-width="400" max-heigth="200">
+        <!-- <v-dialog persistent v-model="dialog" max-width="400" max-heigth="200">
                   <template v-slot:activator="{ on }">
                     <div class="d-flex">
                         <v-btn color="primary" dark class="ml-auto ma-3" v-on="on" @click="saveFamily">
@@ -84,15 +84,27 @@
                   </v-card>
 
 
-        </v-dialog>
-        <!-- <v-btn color="primary" dark class="ml-auto ma-3" @click="saveFamily">
+        </v-dialog> -->
+        <v-btn color="primary" dark class="ml-auto ma-3" @click="saveFamily">
             Guardar 
             <v-icon small>mdi-plus-circle-outline</v-icon>
-        </v-btn> -->
+        </v-btn>
         <v-btn color="dark" @click="clear">
           Limpiar
         </v-btn>
       </v-card-actions>
+      <v-snackbar>
+        {{ text_message }}
+          <template v-slot:action="{ attrs}">
+              <v-btn 
+              color="pink" 
+              text
+              v-bind="attrs"
+              @click="snackbar=false">
+              Cerrar
+              </v-btn>
+          </template>
+      </v-snackbar>
   </v-card>
   </form>
 </template>
@@ -110,6 +122,8 @@
     },
 
     data:() =>({
+      snackbar:false,
+      text_message :'Hello, I am a snackbar',
       description:'',
       abbreviation:'',
       groups: false,
@@ -145,13 +159,15 @@
       // Method Save
       saveFamily() {
         if(this.valid_form()==false){
-          //console.log("No se Puede Guardar");
-          return {
-            error:true,
-            message: "Se deb Ingresar la Descripcion"
-          }
+          this.text_message ="No se Puede Guardar"
+          console.log("No se Puede Guardar");
+          return false;
+          // return {
+          //   error:true,
+          //   message: "Se deb Ingresar la Descripcion"
+          // }
         }
-        console.log(this.valid_form());
+        //console.log(this.valid_form());
         // if(this.valid_form()){
         //   this.text_snack ="No se Puede Guardar"  
         // }
@@ -164,8 +180,10 @@
         FamilyDataService.create(data_save)
         .then((response) => {
           console.log(response.data);
+          this.snackbar = true;
           this.clear()
           this.text_snack ="Datos Guardados Exitosamente"
+          return true;
           //this.submitted = true;
         })
         .catch((e) => {
