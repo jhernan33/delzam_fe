@@ -42,7 +42,7 @@
       class="elevation-1"
   >
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon color="warning" small class="mr-2" @click="editNatural(item.id)">mdi-pencil</v-icon>
+      <v-icon color="warning" small class="mr-2" @click="editFamily(item.id)">mdi-pencil</v-icon>
       <v-icon color="error" small @click="deleteNatural(item.id)">mdi-delete</v-icon>
     </template>
   </v-data-table>

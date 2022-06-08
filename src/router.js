@@ -29,6 +29,12 @@ export default new Router({
             alias: "/addfamily",
             name: "addfamily",
             component: () => import("./views/addFamilyView")
+        },
+        {
+            path: '/editfamily',
+            alias: '/editfamily',
+            name: "editfamily",
+            component: () => import("./views/editfamilyView")
         }
     ]
 });
