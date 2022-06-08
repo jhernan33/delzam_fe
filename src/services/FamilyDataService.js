@@ -15,15 +15,15 @@ class FamilyDataService {
   }
 
   create(data) {
-    return http.post("/familia", data);
+    return http.post("/familia/create/", data);
   }
 
   update(id, data) {
-    return http.put(`/familia/${id}`, data);
+    return http.put(`/familia/update/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/familia/${id}`);
+    return http.delete(`/familia/delete/${id}`);
   }
 
 

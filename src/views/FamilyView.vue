@@ -12,11 +12,13 @@
       >
     </v-text-field>
     <v-spacer></v-spacer>
-    <v-btn 
-      color="primary"
-      to="/add" elevation="8">
-      Nuevo
-    </v-btn>
+      <v-btn 
+        color="primary"
+        elevation="8"
+        to="/addFamily"
+        >Nuevo
+      </v-btn>
+      
   </v-card-title>
   <v-data-table
     :headers="headers"
@@ -53,6 +55,7 @@ export default {
   name: "family-list",
   data() {
     return {
+      dialog: false,
       family: [],
       title: "",
       page: 1,
@@ -161,3 +164,24 @@ export default {
 }
 </style>
 
+
+ <!-- <template>
+   <div>
+     <button @click="dialog=true">Open Dialog</button>
+     <Child :dialog.sync="dialog" />
+   </div>
+</template>
+
+<script>
+import Child from './addFamilyView.vue'
+export default {
+    components: {
+      Child
+    },
+    data() {
+      return {
+        dialog: false
+      }
+   }
+}
+</script> -->

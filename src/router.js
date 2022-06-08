@@ -23,6 +23,12 @@ export default new Router({
             alias: "/family",
             name: "family",
             component: () => import("./views/FamilyView")
+        },
+        {
+            path: '/addfamily',
+            alias: "/addfamily",
+            name: "addfamily",
+            component: () => import("./views/addFamilyView")
         }
     ]
 });
