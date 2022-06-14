@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="onSubmit">
+<form>
   <v-card
     class="mx-auto"
     max-width="800"

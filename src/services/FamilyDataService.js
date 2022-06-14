@@ -27,8 +27,11 @@ class FamilyDataService {
   }
 
 
-  findByTitle(title) {
-    return http.get(`/familia/filter?valor=${title}`);
+  findByFamily(search) {
+    if(search.length>0){
+      return http.get(`/familia/?search=${search}`);
+    }
+    return http.get(`/familia/`);
   }
 }
 

@@ -4,13 +4,20 @@
     Familia de Productos
     <v-spacer></v-spacer>
     <v-text-field 
-      v-model="title"
-      append-icon="mdi-magnify"
-      label="Buscar por Descripcion"
+      v-model="search"
+      label="Que desea Buscar..."
       single-line
       hide-details
+      clearable
+      @click:clear="clearSearch()"
+      @keyup.enter ="onEnter()"
+      @keyup.delete="clearSearch()"
+      class="pa-5"
       >
     </v-text-field>
+    <v-btn class="pa-2" append-icon="mdi-magnify" @click="searchFamily">
+      <v-icon color="error">mdi-archive-search</v-icon>
+    </v-btn>
     <v-spacer></v-spacer>
       <v-btn 
         color="primary"
@@ -24,7 +31,10 @@
     :headers="headers"
     :items="family"
     :hide-default-footer="false"
-    :sort-by="['id','desc_fami','abae_fami']"
+    :sort-by.sync="sortBy"
+    :sort-desc.sync="sortDesc"
+    @update:sort-by="updateSort('by', $event)"
+    @update:sort-desc="updateSort('desc', $event)"
       :page="page"
       :pageCount="numberOfPages"
       :options.sync="options"
@@ -42,10 +52,21 @@
       class="elevation-1"
   >
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon color="warning" small class="mr-2" @click="editFamily(item.id)">mdi-pencil</v-icon>
-      <v-icon color="error" small @click="deleteNatural(item.id)">mdi-delete</v-icon>
+      <v-icon color="warning" small class="mr-2" @click="modiFamily(item.id)">mdi-pencil</v-icon>
+      <v-icon color="error" small @click="showDeleteDialog(item)">mdi-delete</v-icon>
     </template>
   </v-data-table>
+
+  <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+          <v-card-title>Eliminar</v-card-title>
+          <v-card-text>Desea Eliminar la Familia: {{itemToDelete.desc_fami}} ?</v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="dialogDelete = false">Cerrar</v-btn>
+            <v-btn color="primary" @click="deleteFamily()">Borrar</v-btn>
+          </v-card-actions>
+      </v-card>
+  </v-dialog>
 </v-card>
 </template>
 
@@ -56,20 +77,24 @@ export default {
   data() {
     return {
       dialog: false,
+      dialogDelete:false,
+      sortBy:'desc_fami',
+      sortDesc:false,
       family: [],
-      title: "",
+      search: "",
       page: 1,
       totalFamily: 0,
       numberOfPages: 0,
       options: {},
       loading: true,
       headers: [
-        { text: "ID", align: "start", sortable: false, value: "id" },
-        { text: "DESCRIPCION", value: "desc_fami", sortable: false },
-        { text: "ABREVIATAURA", value: "abae_fami", sortable: false },
-        { text: "AGRUPA", value: "agru_fami", sortable: false },
+        { text: "ID", align: "start", sortable: true, value: "id" },
+        { text: "DESCRIPCION", value: "desc_fami", sortable: true },
+        { text: "ABREVIATAURA", value: "abae_fami", sortable: true },
+        { text: "AGRUPA", value: "agru_fami", sortable: true },
         { text: "ACCIONES", value: "actions", sortable: false },
       ],
+      itemToDelete: {},
     };
   },
   watch:{
@@ -78,16 +103,39 @@ export default {
         this.listadoFamily();
       },
     },
-    //deep: true,
   },
   methods: {
+
+    showDeleteDialog(valores){
+      this.itemToDelete = valores;
+      this.dialogDelete = !this.dialogDelete
+    },
+
+    deleteFamily() {
+      const idFamily = this.itemToDelete.id;
+      FamilyDataService.delete(idFamily)
+        .then(() => {
+          this.dialogDelete = false;
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+
+    updateSort(byDesc, event){
+            if(byDesc == 'by'){
+                this.sortBy = event
+            }else if(byDesc == 'desc'){
+                this.sortDesc = event
+            }
+        },
+    focusInput(){
+        this.$refs.search.focus();
+      },
     listadoFamily() {
       this.loading = true;
-      //console.log(this.options);
       const { page, itemsPerPage} = this.options;
-      //console.log(page+" "+itemsPerPage);
-       // let pageNumber = page -1;
-      // console.log(pageNumber);
 
       FamilyDataService.getAll(page,itemsPerPage)
         .then((response) => {
@@ -95,8 +143,6 @@ export default {
           this.family = response.data.results.map(this.getDisplayFamily);
           this.totalFamily = response.data.count;
           this.numberOfPages = response.data.last_page;
-          //pageNumber = response.data.per_page;
-          //console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
@@ -107,40 +153,33 @@ export default {
       this.listadoFamily();
     },
 
-    removeAllNatural() {
-      FamilyDataService.deleteAll()
+    clearSearch(){
+      this.listadoFamily();
+    },
+
+    onEnter(){
+      if(this.search.length<1){
+        this.clearSearch();
+      }
+      this.searchFamily();
+    },
+
+    searchFamily() {
+      FamilyDataService.findByFamily(this.search)
         .then((response) => {
-          console.log(response.data);
-          this.refreshList();
+          this.loading = true;
+          this.family = response.data.results.map(this.getDisplayFamily);
+          this.totalFamily = response.data.count;
+          this.numberOfPages = response.data.last_page;
+          this.loading = false;
         })
         .catch((e) => {
           console.log(e);
         });
     },
 
-    searchTitle() {
-      FamilyDataService.findByTitle(this.title)
-        .then((response) => {
-          console.log(response.data.results);
-          this.natural = response.data.results.map(this.getDisplayFamily());
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-
-    editNatural(id) {
-      this.$router.push({ name: "edit", params: { id: id } });
-    },
-
-    deleteNatural(id) {
-      FamilyDataService.delete(id)
-        .then(() => {
-          this.refreshList();
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    modiFamily(id) {
+      this.$router.push({ name: "editfamily", params: { id: id } });
     },
 
     getDisplayFamily(Object) {
@@ -152,6 +191,7 @@ export default {
       };
     },
   },
+
   mounted() {
     this.listadoFamily();
   },
@@ -163,25 +203,3 @@ export default {
   max-width: 750px;
 }
 </style>
-
-
- <!-- <template>
-   <div>
-     <button @click="dialog=true">Open Dialog</button>
-     <Child :dialog.sync="dialog" />
-   </div>
-</template>
-
-<script>
-import Child from './addFamilyView.vue'
-export default {
-    components: {
-      Child
-    },
-    data() {
-      return {
-        dialog: false
-      }
-   }
-}
-</script> -->

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 
+
 Vue.use(Router);
 
 export default new Router({
@@ -14,27 +15,27 @@ export default new Router({
         },
         {
             path: '/about',
-            alias: "/about",
+            //alias: "/about",
             name: "about",
             component: () => import("./views/AboutView")
         },
         {
             path: '/family',
-            alias: "/family",
+            //alias: "/family",
             name: "family",
             component: () => import("./views/FamilyView")
         },
         {
             path: '/addfamily',
-            alias: "/addfamily",
+            //alias: "/addfamily",
             name: "addfamily",
             component: () => import("./views/addFamilyView")
         },
         {
-            path: '/editfamily',
-            alias: '/editfamily',
+            path: '/editfamily/',
+            alias: "/editfamily",
             name: "editfamily",
-            component: () => import("./views/editfamilyView")
+            component: () => import("./views/editFamilyView")
         }
     ]
 });
