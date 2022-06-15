@@ -162,7 +162,6 @@
       },
       valid_form(){
         if(this.description.length<4){
-          //console.log("Validando...==>"+this.description.length);
           return false;
         }
           return true;
@@ -177,15 +176,8 @@
           this.text_message ="No se Puede Guardar"
           console.log("No se Puede Guardar");
           return false;
-          // return {
-          //   error:true,
-          //   message: "Se deb Ingresar la Descripcion"
-          // }
         }
-        //console.log(this.valid_form());
-        // if(this.valid_form()){
-        //   this.text_snack ="No se Puede Guardar"  
-        // }
+
         const data_save = {
           desc_fami : this.description,
           abae_fami : this.abbreviation,
@@ -194,53 +186,15 @@
         
         FamilyDataService.create(data_save)
         .then((response) => {
-          // console.log(response.data);
-          // console.log(response.data.data['id']);
           this.text_message ="Datos Guardados Exitosamente:"+response.data.data['id'];
           this.snackbar = true;
-          //this.restore()
           return true;
-          //this.submitted = true;
         })
         .catch((e) => {
           console.log(e);
         });
-        //this.snackbar = true;
-        // NaturalDataService.create(data)
-        //   .then((response) => {
-        //     this.tutorial.id = response.data.id;
-        //     console.log(response.data);
-        //     this.submitted = true;
-        //   })
-        //   .catch((e) => {
-        //     console.log(e);
-        //   });
+
       },
-
-    // searchFamily(){
-    //   let description = this.search_natural.desc_fami;
-      
-    //   FamilyDataService.getCedula(this.search_natural.cedu_pena)
-    //     .then((response) => {
-    //       this.search_natural = response.data.map(this.getDisplayNatural);
-          
-    //       if(Object.keys(this.search_natural).length >0){
-    //         this.text_snack ="Cedula Encontrada"
-    //         this.search_natural.cedu_pena = this.search_natural[0]['cedu_pena'];
-    //         this.search_natural.prno_pena = this.search_natural[0]['prno_pena'];
-    //         this.search_natural.seno_pena = this.search_natural[0]['seno_pena'];
-    //         this.search_natural.prap_pena = this.search_natural[0]['prap_pena'];
-    //       }else{
-    //         this.search_natural.cedu_pena = cedula;
-    //         this.text_snack ="Numero de Cedula no Registrado"
-    //       }
-    //       this.snackbar = true;
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // },
-
 
     }
   }

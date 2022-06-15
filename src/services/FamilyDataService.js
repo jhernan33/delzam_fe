@@ -26,12 +26,15 @@ class FamilyDataService {
     return http.delete(`/familia/delete/${id}`);
   }
 
-
   findByFamily(search) {
     if(search.length>0){
       return http.get(`/familia/?search=${search}&page_size=15`);
     }
     return http.get(`/familia/`);
+  }
+
+  dropdown(){
+    return http.get("/familia/combo/");
   }
 }
 

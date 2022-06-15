@@ -30,7 +30,7 @@
       <v-btn 
         color="primary"
         elevation="8"
-        to="/addFamily"
+        to="/addsubfamily"
         >Nuevo
       </v-btn>
       
@@ -71,7 +71,7 @@
           <v-card-text>Desea Eliminar la Sub Familia: {{itemToDelete.desc_sufa}} ?</v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="dialogDelete = false">Cerrar</v-btn>
-            <v-btn color="primary" @click="deleteFamily()">Borrar</v-btn>
+            <v-btn color="primary" @click="deleteSubFamily()">Borrar</v-btn>
           </v-card-actions>
       </v-card>
   </v-dialog>
@@ -120,9 +120,9 @@ export default {
       this.dialogDelete = !this.dialogDelete
     },
 
-    deleteFamily() {
-      const idFamily = this.itemToDelete.id;
-      SubFamilyDataService.delete(idFamily)
+    deleteSubFamily() {
+      const idSubFamily = this.itemToDelete.id;
+      SubFamilyDataService.delete(idSubFamily)
         .then(() => {
           this.dialogDelete = false;
           this.refreshList();
@@ -188,7 +188,7 @@ export default {
     },
 
     modiFamily(id) {
-      this.$router.push({ name: "editfamily", params: { id: id } });
+      this.$router.push({ name: "editsubfamily", params: { id: id } });
     },
 
     getDisplaySubFamily(Object) {

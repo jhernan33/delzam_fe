@@ -31,7 +31,7 @@ export default new Router({
         },
         {
             path: '/editfamily/',
-            alias: "/editfamily",
+            //alias: "/editfamily",
             name: "editfamily",
             component: () => import("./views/family/editFamilyView")
         },
@@ -40,6 +40,16 @@ export default new Router({
             path: '/subfamily',
             name: "subfamily",
             component: () => import("./views/subfamily/SubFamilyView")
+        },
+        {
+            path: '/addsubfamily',
+            name: "addsubfamily",
+            component: () => import("./views/subfamily/addSubFamilyView")
+        },
+        {
+            path: '/editsubfamily/',
+            name: "editsubfamily",
+            component: () => import("./views/subfamily/editSubFamilyView")
         },
     ]
 });
