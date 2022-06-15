@@ -15,19 +15,17 @@ export default new Router({
         },
         {
             path: '/about',
-            //alias: "/about",
             name: "about",
             component: () => import("./views/AboutView")
         },
+        //  Family
         {
             path: '/family',
-            //alias: "/family",
             name: "family",
             component: () => import("./views/family/FamilyView")
         },
         {
             path: '/addfamily',
-            //alias: "/addfamily",
             name: "addfamily",
             component: () => import("./views/family/addFamilyView")
         },
@@ -36,6 +34,12 @@ export default new Router({
             alias: "/editfamily",
             name: "editfamily",
             component: () => import("./views/family/editFamilyView")
-        }
+        },
+        // SubFamily
+        {
+            path: '/subfamily',
+            name: "subfamily",
+            component: () => import("./views/subfamily/SubFamilyView")
+        },
     ]
 });

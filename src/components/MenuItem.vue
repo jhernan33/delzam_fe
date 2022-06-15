@@ -51,7 +51,7 @@
     data: () => ({
       files: [
         ['Familia',     'mdi-human-male-male','/Family'],
-        ['SubFamilia',  'mdi-human-male-female-child','/subfamily'],
+        ['SubFamilia',  'mdi-human-male-female-child','/SubFamily'],
         ['Producto',    'mdi-package-variant','/product']
       ],
       cruds: [
