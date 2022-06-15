@@ -1,6 +1,14 @@
 <template>
 <v-card>
   <v-card-title>
+      <div class="text-h5 mb-1">
+        <v-btn
+          to="/"
+          icon
+          class="hidden-xs-only">
+          <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
+        </v-btn>
+      </div>
     Familia de Productos
     <v-spacer></v-spacer>
     <v-text-field 
@@ -71,7 +79,7 @@
 </template>
 
 <script>
-import FamilyDataService from "../services/FamilyDataService";
+import FamilyDataService from "../../services/FamilyDataService";
 export default {
   name: "family-list",
   data() {

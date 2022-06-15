@@ -23,19 +23,19 @@ export default new Router({
             path: '/family',
             //alias: "/family",
             name: "family",
-            component: () => import("./views/FamilyView")
+            component: () => import("./views/family/FamilyView")
         },
         {
             path: '/addfamily',
             //alias: "/addfamily",
             name: "addfamily",
-            component: () => import("./views/addFamilyView")
+            component: () => import("./views/family/addFamilyView")
         },
         {
             path: '/editfamily/',
             alias: "/editfamily",
             name: "editfamily",
-            component: () => import("./views/editFamilyView")
+            component: () => import("./views/family/editFamilyView")
         }
     ]
 });

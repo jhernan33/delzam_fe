@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import FamilyView  from '../views/FamilyView.vue'
+// import FamilyView  from '../views/family/FamilyView.vue'
 
 Vue.use(VueRouter)
 
@@ -19,12 +19,6 @@ const routes = [
   //   // which is lazy-loaded when the route is visited.
   //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   // },
-  // {
-  //   path:'/family',
-  //   name: 'family',
-  //   component: FamilyView
-  //   //component: () => import('../views/FamilyView.vue')
-  // }
 ]
 
 const router = new VueRouter({

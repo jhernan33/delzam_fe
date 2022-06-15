@@ -122,7 +122,7 @@
 <script>
   import { validationMixin } from 'vuelidate'
   import { required, maxLength } from 'vuelidate/lib/validators'
-  import FamilyDataService from "../services/FamilyDataService";
+  import FamilyDataService from "../../services/FamilyDataService";
 
   export default {
     mixins: [validationMixin],
