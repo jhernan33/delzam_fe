@@ -15,7 +15,7 @@
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Editar Sub-Familias Productos
+          Editar Sub-Categoria de Producto
         </div>
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
@@ -28,7 +28,7 @@
 
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            :rules="[(v) => !!v || 'Descripción de la Sub-Familia es Requerida']"
+            :rules="[(v) => !!v || 'Descripción de la Sub-Categoria es Requerida']"
             label="Descripción*"
             counter="200"
             required
@@ -59,7 +59,7 @@
         <v-list-item-title class="text-h7 mb-1">
           <v-select
             v-model="currentSubFamily.codi_fami"
-            :rules="[(v) => !!v || 'Debe Seleccionar una Familia es Requerida']"
+            :rules="[(v) => !!v || 'Debe Seleccionar una Categoria es Requerida']"
             dense
             clearable
             label="Familia"

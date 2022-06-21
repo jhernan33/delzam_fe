@@ -15,12 +15,12 @@
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Editar Categoria de Producto
+          Edicion Presentacion de Productos
         </div>
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
             label="Id"
-            v-model="currentFamily.id"
+            v-model="currentPresentation.id"
             readonly
             ref="id"
           ></v-text-field>
@@ -28,28 +28,28 @@
 
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            :rules="[(v) => !!v || 'Descripción de la Categoria es Requerida']"
+            :rules="[(v) => !!v || 'Descripción de la Familia es Requerida']"
             label="Descripción*"
             counter="200"
             required
             :maxlength="maxLengthDescription"
-            v-model="currentFamily.desc_fami"
+            v-model="currentPresentation.desc_pres"
           ></v-text-field>
         </v-list-item-title>
 
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            v-model="currentFamily.abae_fami"
+            v-model="currentPresentation.abre_pres"
             label="Abreviatura"
             required
-            counter="3"
+            counter="10"
             :maxlength="maxLengthAbbreviation"
           ></v-text-field>
         </v-list-item-title>
 
         <v-list-item-title class="text-h7 mb-1">
           <v-switch
-             v-model="currentFamily.agru_fami"
+             v-model="currentPresentation.tipo_pres"
               label="Agrupa"
               color="primary"
               hide-details
@@ -92,39 +92,39 @@
 <script>
   import { validationMixin } from 'vuelidate'
   import { required, maxLength } from 'vuelidate/lib/validators'
-  import FamilyDataService from "../../services/FamilyDataService";
+  import PresentationDataService from "../../services/presentationDataService";
 
   export default {
-    name: "editedFamily",
+    name: "editedPresentation",
     mixins: [validationMixin],
     validations: {
-      desc_fami: { required, maxLength: maxLength(200) },
-      abae_fami:{ maxLength :maxLength(3)},
+      desc_pres: { required, maxLength: maxLength(200) },
+      abre_pres:{ maxLength :maxLength(3)},
     },
 
     data:() =>({
-      currentFamily: null,
+      currentPresentation: null,
       snackbar:false,
       text_message :'',
-      desc_fami:'',
-      abae_fami:'',
-      agru_fami: false,
+      desc_pres:'',
+      abre_pres:'',
+      tipo_pres: false,
       maxLengthDescription:200,
-      maxLengthAbbreviation:3,
+      maxLengthAbbreviation:10,
       dialog: false,
       vertical: true,
     }),
     
     methods: {
-      getFamily(id){
+      getPresentation(id){
         
-        FamilyDataService.get(id)
+        PresentationDataService.get(id)
         .then(response => {
-          this.currentFamily = response.data.data;
-          if(this.currentFamily.agru_fami == 'N'){
-            this.currentFamily.agru_fami = false
+          this.currentPresentation = response.data.data;
+          if(this.currentPresentation.tipo_pres == 'N'){
+            this.currentPresentation.tipo_pres = false
           }else{
-            this.currentFamily.agru_fami = true
+            this.currentPresentation.tipo_pres = true
           }
           
         })
@@ -134,45 +134,45 @@
       },
 
       focusInput(){
-        this.$refs.currentFamily.desc_fami.$refs.input.focus();
+        this.$refs.currentPresentation.desc_pres.$refs.input.focus();
       },
 
       clear () {
-        this.currentFamily.desc_fami = ''
-        this.currentFamily.abae_fami = ''
-        this.currentFamily.agru_fami = false
+        this.currentPresentation.desc_pres = ''
+        this.currentPresentation.abre_pres = ''
+        this.currentPresentation.tipo_pres = false
       },
 
       valid_form(){
-        if(this.currentFamily.desc_fami.length<4){
+        if(this.currentPresentation.desc_pres.length<4){
           return false;
         }
           return true;
       },
 
       restore(){
-        if(this.currentFamily.desc_fami.length<3){
+        if(this.currentPresentation.desc_pres.length<3){
           this.snackbar=false;
           return false;
         }
       
-        this.$router.push('/family');
+        this.$router.push('/presentation');
       },
       // Method Save
       updateFamily() {
         if(this.valid_form()==false){
-          this.text_message ="No se puede Actualizar, porque la Descripcion de Categoria es Incorrecta:";
+          this.text_message ="No se puede Actualizar, porque la Descripcion de Presentacion es Incorrecta:";
           this.snackbar = true;
           return false;
         }
-        const id = this.currentFamily.id;
+        const id = this.currentPresentation.id;
         const data_save = {
-          desc_fami : this.currentFamily.desc_fami,
-          abae_fami : this.currentFamily.abae_fami,
-          agru_fami : this.currentFamily.agru_fami == true ? "s": "n",
+          desc_pres : this.currentPresentation.desc_pres,
+          abre_pres : this.currentPresentation.abre_pres,
+          tipo_pres : this.currentPresentation.tipo_pres == true ? "s": "n",
         };
 
-        FamilyDataService.update(id,data_save)
+        PresentationDataService.update(id,data_save)
         .then((response) => {
           this.text_message ="Datos Actualizados Exitosamente:"+response;
           this.snackbar = true;
@@ -187,7 +187,11 @@
     },
 
     mounted() {
-      this.getFamily(this.$route.params.id);
+      console.log(this.$route.params.id);
+      if(this.$route.params.id != 'undefined'){
+        this.getPresentation(this.$route.params.id);
+      }
+      
     },
   }
 </script>

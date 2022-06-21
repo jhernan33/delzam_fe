@@ -51,5 +51,32 @@ export default new Router({
             name: "editsubfamily",
             component: () => import("./views/subfamily/editSubFamilyView")
         },
+        //  Article
+        {
+            path: '/article',
+            name: "article",
+            component: () => import("./views/article/ArticleView")
+        },
+        {
+            path: '/addarticle',
+            name:  "addarticle",
+            component: () => import("./views/article/addArticleView")
+        },
+        //  Presentation
+        {
+            path: '/presentation',
+            name:  "presentation",
+            component: () => import("./views/presentation/PresentationView")
+        },
+        {
+            path: '/addpresentation',
+            name:  "addpresentation",
+            component: () => import("./views/presentation/addPresentationView")
+        },
+        {
+            path: '/editpresentation:id',
+            name:  "editpresentation",
+            component: () => import("./views/presentation/editPresentationView")
+        },
     ]
 });

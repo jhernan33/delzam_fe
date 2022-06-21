@@ -9,7 +9,7 @@
           <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
         </v-btn>
       </div>
-    Categoria de Productos
+    Presentacion de Productos
     <v-spacer></v-spacer>
     <v-text-field 
       v-model="search"
@@ -23,21 +23,21 @@
       class="pa-5"
       >
     </v-text-field>
-    <v-btn class="pa-2" append-icon="mdi-magnify" @click="searchFamily">
+    <v-btn class="pa-2" append-icon="mdi-magnify" @click="searchPresentation">
       <v-icon color="error">mdi-archive-search</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
       <v-btn 
         color="primary"
         elevation="8"
-        to="/addFamily"
+        to="/addPresentation"
         >Nuevo
       </v-btn>
       
   </v-card-title>
   <v-data-table
     :headers="headers"
-    :items="family"
+    :items="presentation"
     :hide-default-footer="false"
     :sort-by.sync="sortBy"
     :sort-desc.sync="sortDesc"
@@ -46,7 +46,7 @@
       :page="page"
       :pageCount="numberOfPages"
       :options.sync="options"
-      :server-items-length="totalFamily"
+      :server-items-length="totalPresentation"
       :loading="loading"
       loading-text="Cargando.. Espere por favor"
       :footer-props="{
@@ -60,7 +60,7 @@
       class="elevation-1"
   >
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon color="warning" small class="mr-2" @click="modiFamily(item.id)">mdi-pencil</v-icon>
+      <v-icon color="warning" small class="mr-2" @click="modiPresentation(item.id)">mdi-pencil</v-icon>
       <v-icon color="error" small @click="showDeleteDialog(item)">mdi-delete</v-icon>
     </template>
   </v-data-table>
@@ -68,10 +68,10 @@
   <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
           <v-card-title>Eliminar</v-card-title>
-          <v-card-text>Desea Eliminar la Categoria: {{itemToDelete.desc_fami}} ?</v-card-text>
+          <v-card-text>Desea Eliminar la Presentacion: {{itemToDelete.desc_pres}} ?</v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="dialogDelete = false">Cerrar</v-btn>
-            <v-btn color="primary" @click="deleteFamily()">Borrar</v-btn>
+            <v-btn color="primary" @click="deletePresentation()">Borrar</v-btn>
           </v-card-actions>
       </v-card>
   </v-dialog>
@@ -79,27 +79,27 @@
 </template>
 
 <script>
-import FamilyDataService from "../../services/FamilyDataService";
+import PresentationDataService from "../../services/presentationDataService";
 export default {
-  name: "family-list",
+  name: "presentation-list",
   data() {
     return {
       dialog: false,
       dialogDelete:false,
-      sortBy:'desc_fami',
+      sortBy:'desc_pres',
       sortDesc:false,
-      family: [],
+      presentation: [],
       search: "",
       page: 1,
-      totalFamily: 0,
+      totalPresentation: 0,
       numberOfPages: 0,
       options: {},
       loading: true,
       headers: [
         { text: "ID", align: "start", sortable: true, value: "id" },
-        { text: "DESCRIPCION", value: "desc_fami", sortable: true },
-        { text: "ABREVIATAURA", value: "abae_fami", sortable: true },
-        { text: "AGRUPA", value: "agru_fami", sortable: true },
+        { text: "DESCRIPCION", value: "desc_pres", sortable: true },
+        { text: "ABREVIATAURA", value: "abre_pres", sortable: true },
+        { text: "TIPO", value: "tipo_pres", sortable: true },
         { text: "ACCIONES", value: "actions", sortable: false },
       ],
       itemToDelete: {},
@@ -108,7 +108,7 @@ export default {
   watch:{
     options:{
       handler(){
-        this.listadoFamily();
+        this.listPresentation();
       },
     },
   },
@@ -119,9 +119,9 @@ export default {
       this.dialogDelete = !this.dialogDelete
     },
 
-    deleteFamily() {
+    deletePresentation() {
       const idFamily = this.itemToDelete.id;
-      FamilyDataService.delete(idFamily)
+      PresentationDataService.delete(idFamily)
         .then(() => {
           this.dialogDelete = false;
           this.refreshList();
@@ -141,15 +141,15 @@ export default {
     focusInput(){
         this.$refs.search.focus();
       },
-    listadoFamily() {
+    listPresentation() {
       this.loading = true;
       const { page, itemsPerPage} = this.options;
 
-      FamilyDataService.getAll(page,itemsPerPage)
+      PresentationDataService.getAll(page,itemsPerPage)
         .then((response) => {
           this.loading = false;
-          this.family = response.data.results.map(this.getDisplayFamily);
-          this.totalFamily = response.data.count;
+          this.presentation = response.data.results.map(this.getDisplayPresentation);
+          this.totalPresentation = response.data.count;
           this.numberOfPages = response.data.last_page;
         })
         .catch((e) => {
@@ -158,26 +158,26 @@ export default {
     },
 
     refreshList() {
-      this.listadoFamily();
+      this.listPresentation();
     },
 
     clearSearch(){
-      this.listadoFamily();
+      this.listPresentation();
     },
 
     onEnter(){
       if(this.search.length<1){
         this.clearSearch();
       }
-      this.searchFamily();
+      this.searchPresentation();
     },
 
-    searchFamily() {
-      FamilyDataService.findByFamily(this.search)
+    searchPresentation() {
+      PresentationDataService.findByFamily(this.search)
         .then((response) => {
           this.loading = true;
-          this.family = response.data.results.map(this.getDisplayFamily);
-          this.totalFamily = response.data.count;
+          this.presentation = response.data.results.map(this.getDisplayPresentation);
+          this.totalPresentation = response.data.count;
           this.numberOfPages = response.data.last_page;
           this.loading = false;
         })
@@ -186,22 +186,22 @@ export default {
         });
     },
 
-    modiFamily(id) {
-      this.$router.push({ name: "editfamily", params: { id: id } });
+    modiPresentation(id) {
+      this.$router.push({ name: "editpresentation", params: { id: id } });
     },
 
-    getDisplayFamily(Object) {
+    getDisplayPresentation(Object) {
       return {
         id: Object.id,
-        desc_fami: Object.desc_fami,
-        abae_fami: Object.abae_fami,
-        agru_fami: Object.agru_fami,
+        desc_pres: Object.desc_pres,
+        abre_pres: Object.abre_pres,
+        tipo_pres: Object.tipo_pres,
       };
     },
   },
 
   mounted() {
-    this.listadoFamily();
+    this.listPresentation();
   },
 };
 </script>

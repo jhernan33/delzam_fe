@@ -9,7 +9,7 @@
           <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
         </v-btn>
       </div>
-    Categoria de Productos
+    Productos
     <v-spacer></v-spacer>
     <v-text-field 
       v-model="search"
@@ -30,14 +30,14 @@
       <v-btn 
         color="primary"
         elevation="8"
-        to="/addFamily"
+        to="/addarticle"
         >Nuevo
       </v-btn>
       
   </v-card-title>
   <v-data-table
     :headers="headers"
-    :items="family"
+    :items="subfamily"
     :hide-default-footer="false"
     :sort-by.sync="sortBy"
     :sort-desc.sync="sortDesc"
@@ -68,10 +68,10 @@
   <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
           <v-card-title>Eliminar</v-card-title>
-          <v-card-text>Desea Eliminar la Categoria: {{itemToDelete.desc_fami}} ?</v-card-text>
+          <v-card-text>Desea Eliminar el Producto: {{itemToDelete.desc_sufa}} ?</v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="dialogDelete = false">Cerrar</v-btn>
-            <v-btn color="primary" @click="deleteFamily()">Borrar</v-btn>
+            <v-btn color="primary" @click="deleteSubFamily()">Borrar</v-btn>
           </v-card-actions>
       </v-card>
   </v-dialog>
@@ -79,16 +79,17 @@
 </template>
 
 <script>
-import FamilyDataService from "../../services/FamilyDataService";
+import ArticleDataService from "../../services/ArticleDataService";
+
 export default {
-  name: "family-list",
+  name: "article-list",
   data() {
     return {
       dialog: false,
       dialogDelete:false,
-      sortBy:'desc_fami',
+      sortBy:'desc_sufa',
       sortDesc:false,
-      family: [],
+      subfamily: [],
       search: "",
       page: 1,
       totalFamily: 0,
@@ -97,9 +98,11 @@ export default {
       loading: true,
       headers: [
         { text: "ID", align: "start", sortable: true, value: "id" },
-        { text: "DESCRIPCION", value: "desc_fami", sortable: true },
-        { text: "ABREVIATAURA", value: "abae_fami", sortable: true },
-        { text: "AGRUPA", value: "agru_fami", sortable: true },
+        { text: "CODIGO", align: "start", sortable: true, value: "idae_arti" },
+        { text: "DESCRIPCION", value: "desc_arti", sortable: true },
+        { text: "PRECIO 1", value: "por1_arti", sortable: true },
+        { text: "PRECIO 2", value: "por2_arti", sortable: true },
+        { text: "SUBCATEGORIA",value: "subfamilia", sortable: true},
         { text: "ACCIONES", value: "actions", sortable: false },
       ],
       itemToDelete: {},
@@ -108,7 +111,7 @@ export default {
   watch:{
     options:{
       handler(){
-        this.listadoFamily();
+        this.listadoSubFamily();
       },
     },
   },
@@ -119,9 +122,9 @@ export default {
       this.dialogDelete = !this.dialogDelete
     },
 
-    deleteFamily() {
-      const idFamily = this.itemToDelete.id;
-      FamilyDataService.delete(idFamily)
+    deleteSubFamily() {
+      const idSubFamily = this.itemToDelete.id;
+      ArticleDataService.delete(idSubFamily)
         .then(() => {
           this.dialogDelete = false;
           this.refreshList();
@@ -141,14 +144,14 @@ export default {
     focusInput(){
         this.$refs.search.focus();
       },
-    listadoFamily() {
+    listadoSubFamily() {
       this.loading = true;
       const { page, itemsPerPage} = this.options;
 
-      FamilyDataService.getAll(page,itemsPerPage)
+      ArticleDataService.getAll(page,itemsPerPage)
         .then((response) => {
           this.loading = false;
-          this.family = response.data.results.map(this.getDisplayFamily);
+          this.subfamily = response.data.results.map(this.getDisplaySubFamily);
           this.totalFamily = response.data.count;
           this.numberOfPages = response.data.last_page;
         })
@@ -158,11 +161,11 @@ export default {
     },
 
     refreshList() {
-      this.listadoFamily();
+      this.listadoSubFamily();
     },
 
     clearSearch(){
-      this.listadoFamily();
+      this.listadoSubFamily();
     },
 
     onEnter(){
@@ -173,10 +176,10 @@ export default {
     },
 
     searchFamily() {
-      FamilyDataService.findByFamily(this.search)
+      ArticleDataService.findByFamily(this.search)
         .then((response) => {
           this.loading = true;
-          this.family = response.data.results.map(this.getDisplayFamily);
+          this.subfamily = response.data.results.map(this.getDisplaySubFamily);
           this.totalFamily = response.data.count;
           this.numberOfPages = response.data.last_page;
           this.loading = false;
@@ -187,21 +190,25 @@ export default {
     },
 
     modiFamily(id) {
-      this.$router.push({ name: "editfamily", params: { id: id } });
+      this.$router.push({ name: "editsubfamily", params: { id: id } });
     },
 
-    getDisplayFamily(Object) {
+    getDisplaySubFamily(Object) {
       return {
         id: Object.id,
-        desc_fami: Object.desc_fami,
-        abae_fami: Object.abae_fami,
-        agru_fami: Object.agru_fami,
+        idae_arti: Object.idae_arti,
+        desc_arti: Object.desc_arti,
+        por1_arti: Object.por1_arti,
+        por2_arti: Object.por2_arti,
+        por3_arti: Object.por3_arti,
+        ppre_arti: Object.ppre_arti,
+        subfamilia: Object.subfamilia,
       };
     },
   },
 
   mounted() {
-    this.listadoFamily();
+    this.listadoSubFamily();
   },
 };
 </script>

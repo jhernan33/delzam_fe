@@ -9,7 +9,7 @@
           <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
         </v-btn>
       </div>
-    Sub-Familia de Productos
+    Sub-Categoria de Productos
     <v-spacer></v-spacer>
     <v-text-field 
       v-model="search"
@@ -68,7 +68,7 @@
   <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
           <v-card-title>Eliminar</v-card-title>
-          <v-card-text>Desea Eliminar la Sub Familia: {{itemToDelete.desc_sufa}} ?</v-card-text>
+          <v-card-text>Desea Eliminar la Sub Categoria: {{itemToDelete.desc_sufa}} ?</v-card-text>
           <v-card-actions>
             <v-btn color="primary" @click="dialogDelete = false">Cerrar</v-btn>
             <v-btn color="primary" @click="deleteSubFamily()">Borrar</v-btn>
@@ -100,7 +100,7 @@ export default {
         { text: "DESCRIPCION", value: "desc_sufa", sortable: true },
         { text: "ABREVIATAURA", value: "abae_sufa", sortable: true },
         { text: "AGRUPA", value: "agru_sufa", sortable: true },
-        { text: "FAMILIA",value: "familia", sortable: true},
+        { text: "CATEGORIA",value: "familia", sortable: true},
         { text: "ACCIONES", value: "actions", sortable: false },
       ],
       itemToDelete: {},

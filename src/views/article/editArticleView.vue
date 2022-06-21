@@ -1,5 +1,4 @@
 <template>
-<form>
   <v-card
     class="mx-auto"
     max-width="800"
@@ -16,23 +15,31 @@
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Registro de Sub-Categoria Productos
+          Editar Sub-Familias Productos
         </div>
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            v-model="description"
-            :rules="[(v) => !!v || 'Descripción de la Sub-Categoria es Requerida']"
-            label="Descripción*"
-            counter="200"
-            required
-            :maxlength="maxLengthDescription"
-            ref="txtdescription"
+            label="Id"
+            v-model="currentSubFamily.id"
+            readonly
+            ref="id"
           ></v-text-field>
         </v-list-item-title>
 
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            v-model="abbreviation"
+            :rules="[(v) => !!v || 'Descripción de la Sub-Familia es Requerida']"
+            label="Descripción*"
+            counter="200"
+            required
+            :maxlength="maxLengthDescription"
+            v-model="currentSubFamily.desc_sufa"
+          ></v-text-field>
+        </v-list-item-title>
+
+        <v-list-item-title class="text-h7 mb-1">
+          <v-text-field
+            v-model="currentSubFamily.abae_sufa"
             label="Abreviatura"
             required
             counter="3"
@@ -42,7 +49,7 @@
 
         <v-list-item-title class="text-h7 mb-7">
           <v-switch
-             v-model="groups"
+             v-model="currentSubFamily.agru_sufa"
               label="Agrupa"
               color="primary"
               hide-details
@@ -51,16 +58,17 @@
 
         <v-list-item-title class="text-h7 mb-1">
           <v-select
-            v-model="cbofamily"
+            v-model="currentSubFamily.codi_fami"
+            :rules="[(v) => !!v || 'Debe Seleccionar una Familia es Requerida']"
             dense
             clearable
-            label="Categoria"
+            label="Familia"
             item-text="desc_fami"
             item-value="id"
-            :items="subfamily"
-            @change="DropDownSubFamily">
+            :items="family"
+            @change="DropDownFamily">
           </v-select>
-      </v-list-item-title>
+        </v-list-item-title>
         
       </v-list-item-content>
 
@@ -68,10 +76,9 @@
 
     
       <v-card-actions class="mb-3">
-        
-        <v-btn color="primary" dark class="ml-auto ma-3" @click="saveFamily">
-            Guardar 
-            <v-icon small>mdi-plus-circle-outline</v-icon>
+        <v-btn color="primary" dark class="ml-auto ma-3" @click="updateFamily">
+            Actualizar 
+            <v-icon small>mdi-pencil-circle</v-icon>
         </v-btn>
         <v-btn color="dark" @click="clear">
           Limpiar
@@ -94,7 +101,6 @@
           </template>
       </v-snackbar>
   </v-card>
-  </form>
 </template>
 
 <script>
@@ -104,92 +110,105 @@
   import FamilyDataService from "../../services/FamilyDataService";
 
   export default {
+    name: "editedSubFamily",
     mixins: [validationMixin],
     validations: {
-      description: { required, maxLength: maxLength(200) },
-      abbreviation:{ maxLength :maxLength(3)},
+      desc_fami: { required, maxLength: maxLength(200) },
+      abae_fami:{ maxLength :maxLength(3)},
     },
 
     data:() =>({
+      currentSubFamily: null,
       snackbar:false,
       text_message :'',
-      description:'',
-      abbreviation:'',
-      groups: false,
-      cbofamily: '',
+      txtdescription:'',
+      txtabbreviation:'',
+      optgroups: false,
+      cbofamily:'',
       maxLengthDescription:200,
       maxLengthAbbreviation:3,
-      search_family: [],
       dialog: false,
       vertical: true,
-      subfamily : [],
     }),
-    mounted(){
-      this.DropDownSubFamily()
-      this.$nextTick(() =>{
-        setTimeout(() =>{
-          this.focusInput();
+    
+    methods: {
+
+      getSubFamily(id){
+        SubFamilyDataService.get(id)
+        .then(response => {
+          console.log(response.data.data);
+          this.currentSubFamily = response.data.data;
+          if(this.currentSubFamily.agru_sufa == 'N'){
+            this.currentSubFamily.agru_sufa = false
+          }else{
+            this.currentSubFamily.agru_sufa = true
+          }
+          
         })
-      })
-    },
-    methods:{
+        .catch(e => {
+          console.log(e);
+        });
+      },
+
       focusInput(){
-        this.$refs.txtdescription.$refs.input.focus();
+        this.$refs.currentSubFamily.desc_fami.$refs.input.focus();
       },
+
       clear () {
-        this.$v.$reset()
-        this.description = ''
-        this.abbreviation = ''
-        this.groups = false
+        this.currentSubFamily.desc_sufa = ''
+        this.currentSubFamily.abae_sufa = ''
+        this.currentSubFamily.agru_sufa = false
       },
+
       valid_form(){
-        if(this.description.length<4){
-          //console.log("Validando...==>"+this.description.length);
+        if(this.currentSubFamily.desc_sufa.length<4){
           return false;
         }
           return true;
       },
+
       restore(){
-        this.snackbar=false;
+        if(this.currentSubFamily.desc_sufa.length<3){
+          this.snackbar=false;
+          return false;
+        }
+      
         this.$router.push('/subfamily');
       },
       // Method Save
-      saveFamily() {
+      updateFamily() {
         if(this.valid_form()==false){
-          this.text_message ="No se Puede Guardar"
-          console.log("No se Puede Guardar");
+          this.text_message ="No se puede Actualizar, porque la Descripcion de Familia es Incorrecta:";
+          this.snackbar = true;
           return false;
         }
+        const id = this.currentSubFamily.id;
         const data_save = {
-          desc_sufa : this.description,
-          abae_sufa : this.abbreviation,
-          agru_sufa : this.groups == true ? "s": "n",
-          codi_fami : this.cbofamily,
+          desc_sufa : this.currentSubFamily.desc_sufa,
+          abae_sufa : this.currentSubFamily.abae_sufa,
+          agru_sufa : this.currentSubFamily.agru_sufa == true ? "s": "n",
+          codi_fami : this.currentSubFamily.codi_fami,
         };
-        
-        SubFamilyDataService.create(data_save)
+
+        SubFamilyDataService.update(id,data_save)
         .then((response) => {
-          // console.log(response.data);
-          // console.log(response.data.data['id']);
-          this.text_message ="Datos Guardados Exitosamente:"+response.data.data['id'];
+          this.text_message ="Datos Actualizados Exitosamente:"+response;
           this.snackbar = true;
-          //this.restore()
+          this.restore()
           return true;
-          //this.submitted = true;
         })
         .catch((e) => {
           console.log(e);
         });
-
       },
 
       /**
        * DropDown Family
        */
-      DropDownSubFamily() {
+      DropDownFamily() {
           FamilyDataService.dropdown()
           .then((response) => {
-            this.subfamily = response.data.map(this.getDisplayFamily);
+            this.family = response.data.map(this.getDisplayFamily);
           })
           .catch((e) => {
             console.log(e);
@@ -203,6 +222,11 @@
         }
       },
 
-    }
+    },
+
+    mounted() {
+      this.getSubFamily(this.$route.params.id);
+      this.DropDownFamily();
+    },
   }
 </script>

@@ -50,9 +50,10 @@
   export default {
     data: () => ({
       files: [
-        ['Familia',     'mdi-human-male-male','/Family'],
-        ['SubFamilia',  'mdi-human-male-female-child','/SubFamily'],
-        ['Producto',    'mdi-package-variant','/product']
+        ['Categoria',         'mdi-human-male-male','/Family'],
+        ['SubCategoria',      'mdi-human-male-female-child','/SubFamily'],
+        ['Producto',        'mdi-package-variant','/article'],
+        ['Presentacion',    'mdi-package-variant','/presentation']
       ],
       cruds: [
         ['Create', 'mdi-plus-outline'],

@@ -16,12 +16,12 @@
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Registro de Familias Productos
+          Registro de Categoria Productos
         </div>
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
             v-model="description"
-            :rules="[(v) => !!v || 'Descripción de la Familia es Requerida']"
+            :rules="[(v) => !!v || 'Descripción de la Categoria es Requerida']"
             label="Descripción*"
             counter="200"
             required
@@ -57,40 +57,9 @@
         color="grey"
       ></v-list-item-avatar> -->
     </v-list-item>
-
     
       <v-card-actions class="mb-3">
-        
-        <!-- <v-dialog persistent v-model="dialog" max-width="400" max-heigth="200">
-                  <template v-slot:activator="{ on }">
-                    <div class="d-flex">
-                        <v-btn color="primary" dark class="ml-auto ma-3" v-on="on" @click="saveFamily">
-                            Guardar 
-                            <v-icon small>mdi-plus-circle-outline</v-icon>
-                        </v-btn>
-                    </div>
-                  </template>
-
-                  <v-card>
-                    <v-card-title>
-                        <span>Familia</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-row>
-                          
-                          <v-col cols="12" sm="12">
-                            <h3>Datos Guardados Exitosamente</h3>
-                          </v-col>
-                        </v-row>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="primary"   to="/family" >Continuar</v-btn>
-                    </v-card-actions>
-                  </v-card>
-
-
-        </v-dialog> -->
+     
         <v-btn color="primary" dark class="ml-auto ma-3" @click="saveFamily">
             Guardar 
             <v-icon small>mdi-plus-circle-outline</v-icon>

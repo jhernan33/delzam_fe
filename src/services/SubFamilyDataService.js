@@ -26,13 +26,20 @@ class SubFamiliaDataService {
     return http.delete(`/subfamilia/delete/${id}`);
   }
 
-
   findByFamily(search) {
     if(search.length>0){
       return http.get(`/subfamilia/?search=${search}&page_size=15`);
     }
     return http.get(`/subfamilia/`);
   }
+
+  dropdown(Family){
+    if(typeof(Family) !== 'undefined' ){
+      return http.get(`/subfamilia/combo/?codi_fami=${Family}`);
+    }
+      return http.get("/subfamilia/combo/");
+  }
+
 }
 
 export default new SubFamiliaDataService();
