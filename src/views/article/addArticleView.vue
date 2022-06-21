@@ -314,8 +314,13 @@
           </v-select>
         </v-list-item-title>
         
+        <!-- <v-list-item-avatar
+        tile
+        size="80"
+        color="grey"
+      ></v-list-item-avatar> -->
+        
       </v-list-item-content>
-
     </v-list-item>
 
     
@@ -449,7 +454,7 @@
     },
     methods:{
       focusInput(){
-        this.$refs.txtdescription.$refs.input.focus();
+        this.$refs.txtcode.$refs.input.focus();
       },
       clear () {
         this.ModelCode = ''
@@ -506,12 +511,12 @@
           por2_arti : this.ModelPorc2,
           por3_arti : this.ModelPorc3,
           ppre_arti : this.ModelPrecArti,
-          exgr_arti : this.ModelExempt,
+          exgr_arti : this.ModelExempt == true ? "E": "G",
           codc_pres : this.ModelPresentationPurchase,
           capc_arti : this.ModelCapacityPurchase,
           codv_pres : this.ModelPresentationSale,
           capv_arti : this.ModelCapacitySale,
-          proc_arti : this.ModelProceeds,
+          proc_arti : this.ModelProceeds == true ? "X": "M",
           codi_sufa : this.ModelSubFamily,
           codi_ivti : this.ModelIva,
         };

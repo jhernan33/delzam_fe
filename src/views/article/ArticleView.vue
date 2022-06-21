@@ -190,7 +190,7 @@ export default {
     },
 
     modiFamily(id) {
-      this.$router.push({ name: "editsubfamily", params: { id: id } });
+      this.$router.push({ name: "editarticle", params: { id: id } });
     },
 
     getDisplaySubFamily(Object) {

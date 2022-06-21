@@ -30,7 +30,7 @@ export default new Router({
             component: () => import("./views/family/addFamilyView")
         },
         {
-            path: '/editfamily/',
+            path: '/editfamily:id',
             //alias: "/editfamily",
             name: "editfamily",
             component: () => import("./views/family/editFamilyView")
@@ -47,7 +47,7 @@ export default new Router({
             component: () => import("./views/subfamily/addSubFamilyView")
         },
         {
-            path: '/editsubfamily/',
+            path: '/editsubfamily:id',
             name: "editsubfamily",
             component: () => import("./views/subfamily/editSubFamilyView")
         },
@@ -61,6 +61,11 @@ export default new Router({
             path: '/addarticle',
             name:  "addarticle",
             component: () => import("./views/article/addArticleView")
+        },
+        {
+            path: '/editarticle:id',
+            name:  "editarticle",
+            component: () => import("./views/article/editArticleView")
         },
         //  Presentation
         {

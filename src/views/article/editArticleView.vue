@@ -1,4 +1,5 @@
 <template>
+<form>
   <v-card
     class="mx-auto"
     max-width="800"
@@ -10,75 +11,324 @@
       <v-list-item-content>
         <div class="text-h4 mb-5">
           <v-btn
-            to="/subfamily"
+            to="/article"
             icon
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Editar Sub-Familias Productos
+          Registro de Articulo
         </div>
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            label="Id"
-            v-model="currentSubFamily.id"
+            v-model="ModelCode"
+            :rules="[(v) => !!v || 'Codigo del Articulo es Requerido']"
+            label="Codigo*"
+            counter="15"
+            required
             readonly
-            ref="id"
+            :maxlength="maxLengthCode"
+            ref="txtcode"
           ></v-text-field>
         </v-list-item-title>
 
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            :rules="[(v) => !!v || 'Descripción de la Sub-Familia es Requerida']"
+            v-model="Modeldescription"
+            :rules="[(v) => !!v || 'Descripción de la Familia es Requerida']"
             label="Descripción*"
             counter="200"
+            clearable
             required
             :maxlength="maxLengthDescription"
-            v-model="currentSubFamily.desc_sufa"
+            ref="txtdescription"
           ></v-text-field>
         </v-list-item-title>
 
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
-            v-model="currentSubFamily.abae_sufa"
-            label="Abreviatura"
+            v-model="ModelCodebar"
+            label="Codigo de Barras"
+            counter="30"
             required
-            counter="3"
-            :maxlength="maxLengthAbbreviation"
+            clearable
+            :maxlength="maxLengthCodeBar"
+            ref="txtcodebar"
           ></v-text-field>
         </v-list-item-title>
 
-        <v-list-item-title class="text-h7 mb-7">
-          <v-switch
-             v-model="currentSubFamily.agru_sufa"
-              label="Agrupa"
-              color="primary"
-              hide-details
-            ></v-switch>
-        </v-list-item-title>
+        <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                md="6"
+              >
+                <v-subheader class="mb-1">Cantidad Minima</v-subheader>
+                <v-slider
+                    v-model="ModelMinimumAmount"
+                    :max="999"
+                    :min="1"
+                    class="align-center"
+                  >
+                  <template v-slot:append>
+                      <v-text-field
+                        v-model="ModelMinimumAmount"
+                        class="mt-0 pt-0"
+                        type="number"
+                        min="1"
+                        style="width: 60px"
+                      ></v-text-field>
+                    </template>
+                  </v-slider>
+              </v-col>
 
-        <v-list-item-title class="text-h7 mb-1">
+              <v-col
+                cols="12"
+                md="6"
+              >
+                <v-subheader class="mb-1">Cantidad Maxima</v-subheader>
+                <v-slider
+                    v-model="ModelMaximumAmount"
+                    :max="99999"
+                    :min="ModelMinimumAmount"
+                    class="align-center"
+                  >
+                  <template v-slot:append>
+                      <v-text-field
+                        v-model="ModelMaximumAmount"
+                        class="mt-0 pt-0"
+                        type="number"
+                        min="1"
+                        style="width: 60px"
+                      ></v-text-field>
+                    </template>
+                  </v-slider>
+              </v-col>
+
+            </v-row>
+          </v-container>
+
+
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                md="3"
+              >
+                <vuetify-money
+                  v-model="ModelPrecArti"
+                  v-bind:label="label_preca"
+                  v-bind:placeholder="placeholder_preca"
+                  v-bind:readonly="false"
+                  v-bind:disabled="false"
+                  v-bind:outlined="false"
+                  v-bind:clearable="true"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="options"
+                  v-bind:properties="properties"
+                />
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="3"
+              >
+                <vuetify-money
+                  v-model="ModelPorc1"
+                  v-bind:label="label_porc1"
+                  v-bind:placeholder="placeholder_porc1"
+                  v-bind:readonly="false"
+                  v-bind:disabled="false"
+                  v-bind:outlined="false"
+                  v-bind:clearable="true"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="options"
+                  v-bind:properties="properties"
+                />
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="3"
+              >
+                <vuetify-money
+                  v-model="ModelPorc2"
+                  v-bind:label="label_porc2"
+                  v-bind:placeholder="placeholder_porc2"
+                  v-bind:readonly="false"
+                  v-bind:disabled="false"
+                  v-bind:outlined="false"
+                  v-bind:clearable="true"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="options"
+                  v-bind:properties="properties"
+                />
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="3"
+              >
+                <vuetify-money
+                  v-model="ModelPorc3"
+                  v-bind:label="label_porc3"
+                  v-bind:placeholder="placeholder_porc3"
+                  v-bind:readonly="false"
+                  v-bind:disabled="false"
+                  v-bind:outlined="false"
+                  v-bind:clearable="true"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="options"
+                  v-bind:properties="properties"
+                />
+              </v-col>
+
+            </v-row>
+          </v-container>
+
+           <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-select
+                  v-model="ModelPresentationSale"
+                  dense
+                  clearable
+                  label="Presentacion Venta"
+                  item-text="desc_pres"
+                  item-value="id"
+                  :items="cboPresentation"
+                  @change="DropDownPresentation">
+                </v-select>
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="2"
+              >
+                <v-text-field
+                  :counter="10"
+                  v-model="ModelCapacitySale"
+                  label="Capacidad Venta"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="4"
+              >
+                <v-select
+                  v-model="ModelPresentationPurchase"
+                  dense
+                  clearable
+                  label="Presentacion Compra"
+                  item-text="desc_pres"
+                  item-value="id"
+                  :items="cboPresentation"
+                  @change="DropDownPresentation">
+                </v-select>
+              </v-col>
+
+              <v-col
+                cols="12"
+                md="2"
+              >
+                <v-text-field
+                  v-model="ModelCapacityPurchase"
+                  :counter="10"
+                  label="Capacidad Compra"
+                  required
+                ></v-text-field>
+              </v-col>
+
+
+            </v-row>
+          </v-container>
+
+        <v-container>
+          <v-row>
+            <v-col cols="6" md="2">
+              <v-switch
+                v-model="ModelExempt"
+                label="Exento"
+                color="primary"
+                hide-details
+              ></v-switch>
+            </v-col>
+            <v-col cols="6" md="2">
+              <v-switch
+                v-model="ModelProceeds"
+                label="Procede"
+                color="primary"
+                hide-details
+              ></v-switch>
+            </v-col>
+          </v-row>
+        </v-container>
+          <v-row>
+            <v-col cols="6" md="6">
+               <v-select
+                v-model="ModelFamily"
+                :rules="[(v) => !!v || 'Debe Seleccionar una Categoria es Requerida']"
+                dense
+                clearable
+                label="Categoria"
+                item-text="desc_fami"
+                item-value="id"
+                :items="cbofamily"
+                @change="selectedFamily"
+                >
+              </v-select>
+            </v-col>
+            <v-col cols="6" md="6">
+              <v-select
+                v-model="ModelSubFamily"
+                :rules="[(v) => !!v || 'Debe Seleccionar una Sub-Categoria es Requerida']"
+                dense
+                clearable
+                label="Sub-Categoria"
+                item-text="desc_sufa"
+                item-value="id"
+                :items="cbosubfamily"
+                >
+              </v-select>
+            </v-col>
+          </v-row>
+        <v-container>
+
+        </v-container>
+
+        <v-list-item-title class="text-h7 mb-2">
           <v-select
-            v-model="currentSubFamily.codi_fami"
-            :rules="[(v) => !!v || 'Debe Seleccionar una Familia es Requerida']"
+            v-model="ModelIva"
+            :rules="[(v) => !!v || 'Debe Seleccionar un Valor IVA es Requerida']"
             dense
             clearable
-            label="Familia"
-            item-text="desc_fami"
+            label="IVA"
+            item-text="desc_ivag"
             item-value="id"
-            :items="family"
-            @change="DropDownFamily">
+            :items="cboIva"
+            @change="DropDownIva">
           </v-select>
         </v-list-item-title>
         
+        <!-- <v-list-item-avatar
+        tile
+        size="80"
+        color="grey"
+      ></v-list-item-avatar> -->
+        
       </v-list-item-content>
-
     </v-list-item>
 
     
       <v-card-actions class="mb-3">
-        <v-btn color="primary" dark class="ml-auto ma-3" @click="updateFamily">
+        
+        <v-btn color="primary" dark class="ml-auto ma-3" @click="saveArticle">
             Actualizar 
-            <v-icon small>mdi-pencil-circle</v-icon>
+            <v-icon small>mdi-plus-circle-outline</v-icon>
         </v-btn>
         <v-btn color="dark" @click="clear">
           Limpiar
@@ -100,106 +350,190 @@
             </v-btn>
           </template>
       </v-snackbar>
+
+      <v-snackbar 
+        v-model="snackbarDue"
+        color="red darken-3" 
+        absolute 
+        :vertical="vertical">
+          {{ text_message }}
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              text
+              v-bind="attrs"
+              @click="warning"
+            >
+              Cerrar
+            </v-btn>
+          </template>
+      </v-snackbar>
   </v-card>
+  </form>
 </template>
 
 <script>
   import { validationMixin } from 'vuelidate'
   import { required, maxLength } from 'vuelidate/lib/validators'
-  import SubFamilyDataService from "../../services/SubFamilyDataService";
   import FamilyDataService from "../../services/FamilyDataService";
+  import SubFamilyDataService from "../../services/SubFamilyDataService";
+  import ArticleDataService from "../../services/ArticleDataService";
+  import IvaDataService from '../../services/IvaDataService';
+  import presentationDataService from '@/services/presentationDataService';
 
   export default {
-    name: "editedSubFamily",
     mixins: [validationMixin],
     validations: {
-      desc_fami: { required, maxLength: maxLength(200) },
-      abae_fami:{ maxLength :maxLength(3)},
+      description: { required, maxLength: maxLength(200) },
+      abbreviation:{ maxLength :maxLength(3)},
     },
 
     data:() =>({
-      currentSubFamily: null,
+      ModelArticle: null,
       snackbar:false,
+      snackbarDue:false,
       text_message :'',
-      txtdescription:'',
+      Modeldescription:'',
       txtabbreviation:'',
+      ModelId:'',
+      ModelCodebar:'',
+      ModelCode:'',
+      ModelMinimumAmount:1,
+      ModelMaximumAmount:9999999,
       optgroups: false,
-      cbofamily:'',
+      ModelFamily:'',
+      ModelSubFamily:'',
+      ModelIva:'',
+      ModelPresentationSale:'',
+      ModelPresentationPurchase:'',
+      ModelCapacitySale:'',
+      ModelCapacityPurchase:'',
+      ModelExempt:'',
+      ModelProceeds:'',
       maxLengthDescription:200,
       maxLengthAbbreviation:3,
+      maxLengthCode:15,
+      maxLengthCodeBar:30,
+      search_family: [],
       dialog: false,
       vertical: true,
+      cbofamily : [],
+      cbosubfamily : [],
+      cboIva: [],
+      cboPresentation: [],
+      ModelPorc1: "1.00",
+      ModelPorc2: "1.00",
+      ModelPorc3: "1.00",
+      ModelPrecArti: "1,00",
+      label_preca: "Precio",
+      placeholder_preca: "Precio",
+      label_porc1: "Porcentaje 1",
+      placeholder_porc1: "Porcentaje 1",
+      label_porc2: "Porcentaje 2",
+      placeholder_porc2: "Porcentaje 2",
+      label_porc3: "Porcentaje 3",
+      placeholder_porc3: "Porcentaje 3",
+      valueWhenIsEmpty: "",
+      options: {
+        locale: "en-US",
+        prefix: "$",
+        suffix: "",
+        length: 11,
+        precision: 2
+      },
+      properties: {
+        hint: "Ingrese el Valor"
+      },
     }),
-    
-    methods: {
-
-      getSubFamily(id){
-        SubFamilyDataService.get(id)
-        .then(response => {
-          console.log(response.data.data);
-          this.currentSubFamily = response.data.data;
-          if(this.currentSubFamily.agru_sufa == 'N'){
-            this.currentSubFamily.agru_sufa = false
-          }else{
-            this.currentSubFamily.agru_sufa = true
-          }
-          
+    mounted(){
+      this.getArticle(this.$route.params.id);
+      this.DropDownFamily();
+      this.DropDownIva();
+      this.DropDownPresentation();
+      this.$nextTick(() =>{
+        setTimeout(() =>{
+          this.focusInput();
         })
-        .catch(e => {
-          console.log(e);
-        });
-      },
-
+      })
+    },
+    methods:{
       focusInput(){
-        this.$refs.currentSubFamily.desc_fami.$refs.input.focus();
+        this.$refs.txtcode.$refs.input.focus();
       },
-
       clear () {
-        this.currentSubFamily.desc_sufa = ''
-        this.currentSubFamily.abae_sufa = ''
-        this.currentSubFamily.agru_sufa = false
+        this.ModelId = ''
+        this.ModelCode = ''
+        this.Modeldescription = ''
+        this.ModelCodebar = ''
+        this.ModelMinimumAmount = ''
+        this.ModelMaximumAmount = ''
+        this.ModelPrecArti = ''
+        this.ModelPorc1 = ''
+        this.ModelPorc2 = ''
+        this.ModelPorc3 = ''
+        this.ModelPresentationSale = ''
+        this.ModelCapacitySale = ''
+        this.ModelPresentationPurchase = ''
+        this.ModelCapacityPurchase = ''
+        this.ModelSubFamily = ''
+        this.ModelIva = ''
+        this.ModelExempt =''
+        this.ModelProceeds =''
       },
-
       valid_form(){
-        if(this.currentSubFamily.desc_sufa.length<4){
+        if(this.ModelCode.length<5){
           return false;
         }
+        if(this.Modeldescription.length<4){
+          return false;
+        }
+
           return true;
       },
-
       restore(){
-        if(this.currentSubFamily.desc_sufa.length<3){
-          this.snackbar=false;
-          return false;
-        }
-      
-        this.$router.push('/subfamily');
+        this.snackbar=false;
+        this.$router.push('/article');
+      },
+      warning(){
+        this.snackbarDue=false;
       },
       // Method Save
-      updateFamily() {
+      saveArticle() {
         if(this.valid_form()==false){
-          this.text_message ="No se puede Actualizar, porque la Descripcion de Familia es Incorrecta:";
-          this.snackbar = true;
+          this.text_message ="No se Puede Guardar, algunos campos son Necesarios o Requeridos"
+          this.snackbarDue = true;
           return false;
         }
-        const id = this.currentSubFamily.id;
-        const data_save = {
-          desc_sufa : this.currentSubFamily.desc_sufa,
-          abae_sufa : this.currentSubFamily.abae_sufa,
-          agru_sufa : this.currentSubFamily.agru_sufa == true ? "s": "n",
-          codi_fami : this.currentSubFamily.codi_fami,
+        const data_updated = {
+          codi_arti : this.ModelCode,
+          idae_arti : this.ModelCode,
+          desc_arti : this.Modeldescription,
+          coba_arti : this.ModelCodebar,
+          cmin_arti : this.ModelMinimumAmount,
+          cmax_arti : this.ModelMaximumAmount,
+          por1_arti : this.ModelPorc1,
+          por2_arti : this.ModelPorc2,
+          por3_arti : this.ModelPorc3,
+          ppre_arti : this.ModelPrecArti,
+          exgr_arti : this.ModelExempt == true ? "E": "G",
+          codc_pres : this.ModelPresentationPurchase,
+          capc_arti : this.ModelCapacityPurchase,
+          codv_pres : this.ModelPresentationSale,
+          capv_arti : this.ModelCapacitySale,
+          proc_arti : this.ModelProceeds == true ? "X": "M",
+          codi_sufa : this.ModelSubFamily,
+          codi_ivti : this.ModelIva,
         };
-
-        SubFamilyDataService.update(id,data_save)
+        
+        ArticleDataService.update(this.ModelId,data_updated)
         .then((response) => {
           this.text_message ="Datos Actualizados Exitosamente:"+response;
           this.snackbar = true;
-          this.restore()
           return true;
         })
         .catch((e) => {
           console.log(e);
         });
+
       },
 
       /**
@@ -208,7 +542,7 @@
       DropDownFamily() {
           FamilyDataService.dropdown()
           .then((response) => {
-            this.family = response.data.map(this.getDisplayFamily);
+            this.cbofamily = response.data.map(this.getDisplayFamily);
           })
           .catch((e) => {
             console.log(e);
@@ -222,11 +556,109 @@
         }
       },
 
-    },
+      selectedFamily(selectObj){
+        this.DropDownSubFamily(selectObj);
+      },
 
-    mounted() {
-      this.getSubFamily(this.$route.params.id);
-      this.DropDownFamily();
-    },
+      /**
+       * DropDown Sub Family
+       */
+      DropDownSubFamily(ObjectArticle) {
+          SubFamilyDataService.dropdown(ObjectArticle.family)
+          .then((response) => {            
+            this.ModelSubFamily = ObjectArticle.codi_sufa;
+            this.cbosubfamily = response.data.map(this.getDisplaySubFamily);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      },
+
+      getDisplaySubFamily(subfamily){
+        return {
+          id : subfamily.id,
+          desc_sufa : subfamily.desc_sufa,
+        }
+      },
+
+      /**
+       * DropDown Iva
+       */
+      DropDownIva() {
+          IvaDataService.dropdown()
+          .then((response) => {
+            this.cboIva = response.data.map(this.getDisplayIva);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      },
+
+      getDisplayIva(iva){
+        return {
+          id : iva.id,
+          desc_ivag : iva.desc_ivag,
+        }
+      },
+
+
+      /**
+       * DropDown Presentation
+       */
+      DropDownPresentation() {
+          presentationDataService.dropdown()
+          .then((response) => {
+            this.cboPresentation = response.data.map(this.getDisplayPresentation);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      },
+
+      getDisplayPresentation(presentation){
+        return {
+          id : presentation.id,
+          desc_pres : presentation.desc_pres,
+        }
+      },
+
+      /**
+       * Search Article
+       * @param {*} id 
+       */
+      getArticle(id){
+        ArticleDataService.get(id)
+        .then(response => {
+          //console.log(response.data.data);
+          this.ModelArticle = response.data.data;
+          //console.log(this.ModelArticle);
+          this.ModelId                    = this.ModelArticle.id;
+          this.ModelCode                  = this.ModelArticle.codi_arti;
+          this.Modeldescription           = this.ModelArticle.desc_arti;
+          this.ModelCodebar               = this.ModelArticle.coba_arti;
+          this.ModelMinimumAmount         = this.ModelArticle.cmin_arti;
+          this.ModelMaximumAmount         = this.ModelArticle.cmax_arti;
+          this.ModelPrecArti              = this.ModelArticle.ppre_arti;
+          this.ModelPorc1                 = this.ModelArticle.por1_arti;
+          this.ModelPorc2                 = this.ModelArticle.por2_arti;
+          this.ModelPorc3                 = this.ModelArticle.por3_arti;
+          this.ModelPresentationSale      = this.ModelArticle.codv_pres;
+          this.ModelCapacitySale          = this.ModelArticle.capv_arti;
+          this.ModelPresentationPurchase  = this.ModelArticle.codc_pres;
+          this.ModelCapacityPurchase      = this.ModelArticle.capc_arti;
+          this.ModelExempt                = this.ModelArticle.exgr_arti == "E" ? true: false;
+          this.ModelProceeds              = this.ModelArticle.proc_arti == "X" ? true: false;
+          //this.ModelSubFamily             = this.ModelArticle.codi_sufa
+          this.selectedFamily(this.ModelArticle);
+          //this.DropDownSubFamily(this.ModelArticle.codi_sufa);
+          this.ModelFamily                = this.ModelArticle.family;
+          this.ModelIva                   = this.ModelArticle.codi_ivti;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+
+    }
   }
 </script>
