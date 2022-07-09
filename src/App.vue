@@ -36,7 +36,7 @@ nav {
       <router-link to="/">Principal</router-link>
     </v-navigation-drawer> -->
     <v-app-bar app>
-      <a href="/">Delzam</a> 
+      <a href="/"><v-img src="../src/assets/log.png" width="40px"></v-img></a>
     </v-app-bar>
     <!-- <nav>
       <router-link to="/">Principal</router-link>
