@@ -16,7 +16,7 @@
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Registro de Articulo
+          Editar Articulo
         </div>
         <v-list-item-title class="text-h7 mb-1">
           <v-text-field
@@ -314,12 +314,21 @@
           </v-select>
         </v-list-item-title>
         
-        <!-- <v-list-item-avatar
-        tile
-        size="80"
-        color="grey"
-      ></v-list-item-avatar> -->
-        
+         <v-list-item-title class="text-h7 mb-1">
+          <template>
+            <v-carousel>
+              <v-carousel-item
+                v-for="(item,i) in ModelArrayImages"
+                :key="i"
+                :src="item.image"
+                reverse-transition="fade-transition"
+                transition="fade-transition"
+                contain
+              ></v-carousel-item>
+            </v-carousel>
+          </template>
+        </v-list-item-title>
+
       </v-list-item-content>
     </v-list-item>
 
@@ -400,6 +409,7 @@
       ModelMinimumAmount:1,
       ModelMaximumAmount:9999999,
       optgroups: false,
+      ModelArrayImages:[],
       ModelFamily:'',
       ModelSubFamily:'',
       ModelIva:'',
@@ -416,6 +426,7 @@
       search_family: [],
       dialog: false,
       vertical: true,
+      arrayImages:new Array(),
       cbofamily : [],
       cbosubfamily : [],
       cboIva: [],
@@ -443,6 +454,21 @@
       properties: {
         hint: "Ingrese el Valor"
       },
+      items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+          },
+        ],
+
     }),
     mounted(){
       this.getArticle(this.$route.params.id);
@@ -653,6 +679,7 @@
           //this.DropDownSubFamily(this.ModelArticle.codi_sufa);
           this.ModelFamily                = this.ModelArticle.family;
           this.ModelIva                   = this.ModelArticle.codi_ivti;
+          this.ModelArrayImages           = this.ModelArticle.foto_arti;
         })
         .catch(e => {
           console.log(e);

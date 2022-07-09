@@ -313,6 +313,21 @@
             @change="DropDownIva">
           </v-select>
         </v-list-item-title>
+
+        <v-list-item-title class="text-h7 mb-2">
+            <v-file-input
+            v-model="ModelArrayImages"
+              chips
+              multiple
+              label="Seleccionar Imagenes"
+              accept="image/png, image/jpeg, image/jpg"
+              counter
+              show-size
+              prepend-icon="mdi-camera"
+              type="file"
+              @change="handleImage"
+          ></v-file-input>
+        </v-list-item-title>
         
         <!-- <v-list-item-avatar
         tile
@@ -326,7 +341,7 @@
     
       <v-card-actions class="mb-3">
         
-        <v-btn color="primary" dark class="ml-auto ma-3" @click="saveSubFamily">
+        <v-btn color="primary" dark class="ml-auto ma-3" @click="saveArticle">
             Guardar 
             <v-icon small>mdi-plus-circle-outline</v-icon>
         </v-btn>
@@ -388,11 +403,16 @@
     },
 
     data:() =>({
+      // rules: [
+      //   value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+      // ],
+      images:'',
       snackbar:false,
       snackbarDue:false,
       text_message :'',
       Modeldescription:'',
       txtabbreviation:'',
+      ModelArrayImages:[],
       ModelCodebar:'',
       ModelCode:'',
       ModelMinimumAmount:1,
@@ -414,6 +434,8 @@
       search_family: [],
       dialog: false,
       vertical: true,
+      arrayImages:new Array(),
+      readers: [],
       cbofamily : [],
       cbosubfamily : [],
       cboIva: [],
@@ -452,7 +474,36 @@
         })
       })
     },
+
     methods:{
+      handleImage:function(files){
+        var selectedImage = files;  // get first file
+        this.createBase64Image(selectedImage);
+      },
+
+      createBase64Image(fileObject){
+        var filesSelected = fileObject
+        if(fileObject.length>0){
+          fileObject.forEach((file,f) =>{
+            var fileToLoad = filesSelected[f];
+            var arrayI = new Object();
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(fileLoadedEvent) {
+
+              var srcData = fileLoadedEvent.target.result; // <--- data: base64
+              console.log(srcData);
+              var posicion = srcData.indexOf(',');
+              srcData = srcData.substring(posicion+1,srcData.length)
+              arrayI.base=srcData;
+            }
+            fileReader.readAsDataURL(fileToLoad);
+            this.$set(this.arrayImages,f,arrayI);
+          })
+          
+        }
+      },
+
       focusInput(){
         this.$refs.txtcode.$refs.input.focus();
       },
@@ -493,13 +544,14 @@
         this.snackbarDue=false;
       },
       // Method Save
-      saveSubFamily() {
-        if(this.valid_form()==false){
+      saveArticle() {
+       
+       if(this.valid_form()==false){
           this.text_message ="No se Puede Guardar, algunos campos son Necesarios o Requeridos"
           this.snackbarDue = true;
-          //console.log("No se Puede Guardar");
           return false;
         }
+
         const data_save = {
           codi_arti : this.ModelCode,
           idae_arti : this.ModelCode,
@@ -519,8 +571,12 @@
           proc_arti : this.ModelProceeds == true ? "X": "M",
           codi_sufa : this.ModelSubFamily,
           codi_ivti : this.ModelIva,
+          foto_arti: this.arrayImages,
         };
+        console.log(data_save);
+        //console.log("Data de Guardado="+JSON.stringify(data_save));
         
+
         ArticleDataService.create(data_save)
         .then((response) => {
           this.text_message ="Datos Guardados Exitosamente:"+response.data.data['id'];

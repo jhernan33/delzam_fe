@@ -53,7 +53,10 @@
         ['Categoria',         'mdi-human-male-male','/Family'],
         ['SubCategoria',      'mdi-human-male-female-child','/SubFamily'],
         ['Producto',        'mdi-package-variant','/article'],
-        ['Presentacion',    'mdi-package-variant','/presentation']
+        ['Presentacion',    'mdi-package-variant','/presentation'],
+        ['Iva',             'mdi-package-variant','/iva'],
+        ['Vendedor',        'mdi-package-variant','/sales'],
+        ['Cliente',        'mdi-package-variant','/customer'],
       ],
       cruds: [
         ['Create', 'mdi-plus-outline'],
