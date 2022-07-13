@@ -630,8 +630,8 @@
         //console.log("Data Save==>"+JSON.stringify(data_updated));
         
         ArticleDataService.update(this.ModelId,data_updated)
-        .then((response) => {
-          this.text_message ="Datos Actualizados Exitosamente:"+response;
+        .then(() => {
+          this.text_message ="Datos Actualizados Exitosamente";
           this.snackbar = true;
           return true;
         })
