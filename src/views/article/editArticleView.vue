@@ -627,7 +627,7 @@
           foto_arti : this.arrayImages,
         };
 
-        console.log("Data Save==>"+JSON.stringify(data_updated));
+        //console.log("Data Save==>"+JSON.stringify(data_updated));
         
         ArticleDataService.update(this.ModelId,data_updated)
         .then((response) => {
