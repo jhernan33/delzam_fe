@@ -324,9 +324,44 @@
                 reverse-transition="fade-transition"
                 transition="fade-transition"
                 contain
-              ></v-carousel-item>
+              >
+               <v-card
+                  class="" 
+                  max-width="100" height="50"
+                >
+                Eliminar
+              <v-row
+                class=""
+                justify="center"
+              >
+                <div class="text-h6">
+                   <v-switch
+                      value
+                      color="red"
+                    ></v-switch>    
+                </div>
+              </v-row>
+              </v-card>
+             
+              
+              </v-carousel-item>
             </v-carousel>
           </template>
+        </v-list-item-title>
+
+        <v-list-item-title class="text-h7 mb-2">
+            <v-file-input
+              v-model="ModelArrayImagesNew"
+              chips
+              multiple
+              label="Seleccionar Imagenes"
+              accept="image/png, image/jpeg, image/jpg"
+              counter
+              show-size
+              prepend-icon="mdi-camera"
+              type="file"
+              @change="handleImage"
+          ></v-file-input>
         </v-list-item-title>
 
       </v-list-item-content>
@@ -410,6 +445,8 @@
       ModelMaximumAmount:9999999,
       optgroups: false,
       ModelArrayImages:[],
+      ModelArrayImagesNew:[],
+      ModelDeleteImages:[],
       ModelFamily:'',
       ModelSubFamily:'',
       ModelIva:'',
@@ -427,6 +464,7 @@
       dialog: false,
       vertical: true,
       arrayImages:new Array(),
+      arrayImagesNew: new Array(),
       cbofamily : [],
       cbosubfamily : [],
       cboIva: [],
@@ -454,20 +492,6 @@
       properties: {
         hint: "Ingrese el Valor"
       },
-      items: [
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-          },
-        ],
 
     }),
     mounted(){
@@ -482,6 +506,66 @@
       })
     },
     methods:{
+      getImages(){
+        let arrayCarga = [];
+        arrayCarga = this.arrayImagesNew;
+        //console.log("Imagenes==>"+arrayCarga+" "+typeof(arrayCarga));
+        let images = 0;
+        images = this.ModelArrayImages;
+        //console.log("Cantidad de Imagenes Para Carrousel==>"+images.length);
+        //console.log(typeof(images));
+        //var ObjetGeneral = new Object();
+        //console.log("Longitud Images==>"+images);
+        if(images != null){
+          images.forEach((img, x)=>{
+              var arrayI = new Object();
+              arrayI.image = img.image;
+              arrayI.delete = false;
+              arrayI.id = x+1;
+              this.$set(this.arrayImages,x,arrayI);
+          })
+        }
+        
+        /**
+         * Agregar las Imagenes Base 64
+         */
+        var position = this.arrayImages.length;
+        if(arrayCarga.length>0){
+          for(let i =0; i <arrayCarga.length; i++){
+             this.$set(this.arrayImages,position,arrayCarga[i]);
+             position++;
+          }
+        }
+      },
+
+      handleImage:function(files){
+        var selectedImage = files;  // get first file
+        this.createBase64Image(selectedImage);
+      },
+
+      createBase64Image(fileObject){
+        var filesSelected = fileObject
+        if(fileObject.length>0){
+          fileObject.forEach((file,f) =>{
+            var fileToLoad = filesSelected[f];
+            var arrayI = new Object();
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(fileLoadedEvent) {
+
+              var srcData = fileLoadedEvent.target.result; // <--- data: base64
+              //console.log(srcData);
+              var posicion = srcData.indexOf(',');
+              srcData = srcData.substring(posicion+1,srcData.length)
+              arrayI.image=srcData;
+            }
+            fileReader.readAsDataURL(fileToLoad);
+            this.$set(this.arrayImagesNew,f,arrayI);
+          })
+          
+        }
+      },
+
       focusInput(){
         this.$refs.txtcode.$refs.input.focus();
       },
@@ -524,15 +608,18 @@
       },
       // Method Save
       saveArticle() {
+        this.getImages();
+
         if(this.valid_form()==false){
           this.text_message ="No se Puede Guardar, algunos campos son Necesarios o Requeridos"
           this.snackbarDue = true;
           return false;
         }
+        
         const data_updated = {
           codi_arti : this.ModelCode,
           idae_arti : this.ModelCode,
-          desc_arti : this.Modeldescription,
+          desc_arimagesti : this.Modeldescription,
           coba_arti : this.ModelCodebar,
           cmin_arti : this.ModelMinimumAmount,
           cmax_arti : this.ModelMaximumAmount,
@@ -548,7 +635,10 @@
           proc_arti : this.ModelProceeds == true ? "X": "M",
           codi_sufa : this.ModelSubFamily,
           codi_ivti : this.ModelIva,
+          foto_arti : this.arrayImages,
         };
+
+        //console.log("Data Save==>"+JSON.stringify(data_updated));
         
         ArticleDataService.update(this.ModelId,data_updated)
         .then((response) => {
@@ -680,6 +770,7 @@
           this.ModelFamily                = this.ModelArticle.family;
           this.ModelIva                   = this.ModelArticle.codi_ivti;
           this.ModelArrayImages           = this.ModelArticle.foto_arti;
+          this.ModelDeleteImages          = [{'id':1, value:true},{'id':2, value:false},{'id':3, value:false},{'id':4, value:false},{'id':5, value:false},{'id':6, value:false},{'id':7, value:false}];
         })
         .catch(e => {
           console.log(e);

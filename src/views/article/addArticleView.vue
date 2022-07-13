@@ -316,7 +316,7 @@
 
         <v-list-item-title class="text-h7 mb-2">
             <v-file-input
-            v-model="ModelArrayImages"
+              v-model="ModelArrayImages"
               chips
               multiple
               label="Seleccionar Imagenes"
@@ -492,7 +492,6 @@
             fileReader.onload = function(fileLoadedEvent) {
 
               var srcData = fileLoadedEvent.target.result; // <--- data: base64
-              console.log(srcData);
               var posicion = srcData.indexOf(',');
               srcData = srcData.substring(posicion+1,srcData.length)
               arrayI.base=srcData;
