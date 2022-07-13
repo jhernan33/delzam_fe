@@ -83,5 +83,23 @@ export default new Router({
             name:  "editpresentation",
             component: () => import("./views/presentation/editPresentationView")
         },
+        /**
+         * Taxe
+         */
+        {
+            path: '/tax',
+            name:  "tax",
+            component: () => import("./views/taxe/TaxeView")
+        },
+        {
+            path: '/addtax',
+            name:  "addtax",
+            component: () => import("./views/taxe/addTaxeView")
+        },
+        {
+            path: '/editTax:id',
+            name:  "editTax",
+            component: () => import("./views/taxe/editTaxeView")
+        },
     ]
 });

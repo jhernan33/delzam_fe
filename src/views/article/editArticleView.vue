@@ -325,27 +325,14 @@
                 transition="fade-transition"
                 contain
               >
-               <v-card
-                  class="" 
-                  max-width="100" height="50"
-                >
-                Eliminar
-              <v-row
-                class=""
-                justify="center"
-              >
-                <div class="text-h6">
-                   <v-switch
-                      value
-                      color="red"
-                    ></v-switch>    
-                </div>
-              </v-row>
-              </v-card>
-             
-              
+              <div class="title">
+                <v-btn color="error" dark large @click="onClickHandler(i)">Borrar</v-btn>
+              </div>
               </v-carousel-item>
             </v-carousel>
+            <v-snackbar v-model="snackbarDelete" centered timeout="500" vertical color="#E53935">
+                Imagen ya Marcada para Eliminar
+              </v-snackbar>
           </template>
         </v-list-item-title>
 
@@ -435,6 +422,7 @@
       ModelArticle: null,
       snackbar:false,
       snackbarDue:false,
+      snackbarDelete:false,
       text_message :'',
       Modeldescription:'',
       txtabbreviation:'',
@@ -506,21 +494,22 @@
       })
     },
     methods:{
+      onClickHandler (index) {
+        this.snackbarDelete = true;
+        let searchIndex = this.arrayImages.findIndex(s => s.id ==index+1);
+        this.arrayImages[searchIndex].delete = true; 
+      },
+
       getImages(){
         let arrayCarga = [];
         arrayCarga = this.arrayImagesNew;
-        //console.log("Imagenes==>"+arrayCarga+" "+typeof(arrayCarga));
         let images = 0;
         images = this.ModelArrayImages;
-        //console.log("Cantidad de Imagenes Para Carrousel==>"+images.length);
-        //console.log(typeof(images));
-        //var ObjetGeneral = new Object();
-        //console.log("Longitud Images==>"+images);
         if(images != null){
           images.forEach((img, x)=>{
               var arrayI = new Object();
               arrayI.image = img.image;
-              arrayI.delete = false;
+              arrayI.delete = img.delete;
               arrayI.id = x+1;
               this.$set(this.arrayImages,x,arrayI);
           })
@@ -638,7 +627,7 @@
           foto_arti : this.arrayImages,
         };
 
-        //console.log("Data Save==>"+JSON.stringify(data_updated));
+        console.log("Data Save==>"+JSON.stringify(data_updated));
         
         ArticleDataService.update(this.ModelId,data_updated)
         .then((response) => {
@@ -769,13 +758,31 @@
           //this.DropDownSubFamily(this.ModelArticle.codi_sufa);
           this.ModelFamily                = this.ModelArticle.family;
           this.ModelIva                   = this.ModelArticle.codi_ivti;
-          this.ModelArrayImages           = this.ModelArticle.foto_arti;
+          this.setArrayImages(this.ModelArticle.foto_arti);
+          this.ModelArrayImages           = this.arrayImages;
           this.ModelDeleteImages          = [{'id':1, value:true},{'id':2, value:false},{'id':3, value:false},{'id':4, value:false},{'id':5, value:false},{'id':6, value:false},{'id':7, value:false}];
         })
         .catch(e => {
           console.log(e);
         });
       },
+
+      /**
+       * Method Set state Image
+       */
+      setArrayImages(listImages){
+        let imagesList = 0;
+        imagesList = listImages;
+        if(imagesList != null){
+          imagesList.forEach((img, x)=>{
+              var arrayI = new Object();
+              arrayI.image = img.image;
+              arrayI.delete = false;
+              arrayI.id = x+1;
+              this.$set(this.arrayImages,x,arrayI);
+          })
+        }
+      }
 
     }
   }
