@@ -98,14 +98,11 @@ export default {
       loading: true,
       headers: [
         { text: "ID", align: "start", sortable: true, value: "id" },
+        { text: "SIAE", align: "start", sortable: true, value: "codi_arti" },
         { text: "CODIGO", align: "start", sortable: true, value: "idae_arti" },
         { text: "DESCRIPCION", value: "desc_arti", sortable: true },
         { text: "SUBCATEGORIA",value: "subfamilia", sortable: true},
         { text: "COSTO", value: "ppre_arti", sortable: true },
-        { text: "% 1", value: "cos1_arti", sortable: true },
-        { text: "% 2", value: "cos2_arti", sortable: true },
-        { text: "% 3", value: "cos3_arti", sortable: true },
-        { text: "% 4", value: "cos4_arti", sortable: true },
         { text: "ACCIONES", value: "actions", sortable: false },
       ],
       itemToDelete: {},
@@ -199,6 +196,7 @@ export default {
     getDisplaySubFamily(Object) {
       return {
         id: Object.id,
+        codi_arti: Object.codi_arti,
         idae_arti: Object.idae_arti,
         desc_arti: Object.desc_arti,
         por1_arti: Object.por1_arti,
