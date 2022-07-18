@@ -2,7 +2,6 @@
 <form>
   <v-card
     class="mx-auto"
-    max-width="800"
     outlined
     shaped
     elevation="3"
@@ -19,16 +18,45 @@
           Editar Articulo
         </div>
         <v-list-item-title class="text-h7 mb-1">
-          <v-text-field
-            v-model="ModelCode"
-            :rules="[(v) => !!v || 'Codigo del Articulo es Requerido']"
-            label="Codigo*"
-            counter="15"
-            required
-            readonly
-            :maxlength="maxLengthCode"
-            ref="txtcode"
-          ></v-text-field>
+            <v-row>
+              <v-col cols="4">
+                <v-text-field
+                  v-model="ModelCode"
+                  :rules="[(v) => !!v || 'Codigo del Articulo es Requerido']"
+                  label="Codigo SIAE*"
+                  counter="50"
+                  required
+                  readonly
+                  :maxlength="maxLengthCode"
+                  ref="txtcode"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="4"
+              >
+                <v-text-field
+                  v-model="ModelCodeIdae"
+                  :rules="[(v) => !!v || 'Codigo del Articulo es Requerido']"
+                  label="Codigo IDAE"
+                  counter="15"
+                  required
+                  readonly
+                  :maxlength="maxLengthCode"
+                  ref="txtcode"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="4">
+                <v-text-field
+                  v-model="ModelCodebar"
+                  label="Codigo de Barras"
+                  counter="30"
+                  required
+                  clearable
+                  :maxlength="maxLengthCodeBar"
+                  ref="txtcodebar"
+                ></v-text-field>
+              </v-col>
+            </v-row>
         </v-list-item-title>
 
         <v-list-item-title class="text-h7 mb-1">
@@ -36,7 +64,7 @@
             v-model="Modeldescription"
             :rules="[(v) => !!v || 'Descripción de la Familia es Requerida']"
             label="Descripción*"
-            counter="200"
+            counter="250"
             clearable
             required
             :maxlength="maxLengthDescription"
@@ -44,276 +72,267 @@
           ></v-text-field>
         </v-list-item-title>
 
-        <v-list-item-title class="text-h7 mb-1">
-          <v-text-field
-            v-model="ModelCodebar"
-            label="Codigo de Barras"
-            counter="30"
-            required
-            clearable
-            :maxlength="maxLengthCodeBar"
-            ref="txtcodebar"
-          ></v-text-field>
-        </v-list-item-title>
-
-        <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-                md="6"
+        <v-row>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-subheader class="mb-1">Cantidad Minima</v-subheader>
+            <v-slider
+                v-model="ModelMinimumAmount"
+                :max="999"
+                :min="1"
+                class="align-center"
               >
-                <v-subheader class="mb-1">Cantidad Minima</v-subheader>
-                <v-slider
+              <template v-slot:append>
+                  <v-text-field
                     v-model="ModelMinimumAmount"
-                    :max="999"
-                    :min="1"
-                    class="align-center"
-                  >
-                  <template v-slot:append>
-                      <v-text-field
-                        v-model="ModelMinimumAmount"
-                        class="mt-0 pt-0"
-                        type="number"
-                        min="1"
-                        style="width: 60px"
-                      ></v-text-field>
-                    </template>
-                  </v-slider>
-              </v-col>
+                    class="mt-0 pt-0"
+                    type="number"
+                    min="1"
+                    style="width: 60px"
+                  ></v-text-field>
+                </template>
+              </v-slider>
+          </v-col>
 
-              <v-col
-                cols="12"
-                md="6"
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-subheader class="mb-1">Cantidad Maxima</v-subheader>
+            <v-slider
+                v-model="ModelMaximumAmount"
+                :max="99999"
+                :min="ModelMinimumAmount"
+                class="align-center"
               >
-                <v-subheader class="mb-1">Cantidad Maxima</v-subheader>
-                <v-slider
+              <template v-slot:append>
+                  <v-text-field
                     v-model="ModelMaximumAmount"
-                    :max="99999"
-                    :min="ModelMinimumAmount"
-                    class="align-center"
-                  >
-                  <template v-slot:append>
-                      <v-text-field
-                        v-model="ModelMaximumAmount"
-                        class="mt-0 pt-0"
-                        type="number"
-                        min="1"
-                        style="width: 60px"
-                      ></v-text-field>
-                    </template>
-                  </v-slider>
-              </v-col>
+                    class="mt-0 pt-0"
+                    type="number"
+                    min="1"
+                    style="width: 60px"
+                  ></v-text-field>
+                </template>
+              </v-slider>
+          </v-col>
 
-            </v-row>
-          </v-container>
+          <v-col cols="11" md="4">
+            <vuetify-money
+              v-model="ModelPrecArti"
+              v-bind:label="label_preca"
+              v-bind:placeholder="placeholder_preca"
+              v-bind:readonly="false"
+              v-bind:disabled="false"
+              v-bind:outlined="false"
+              v-bind:clearable="true"
+              v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+              v-bind:options="options"
+              v-bind:properties="properties"
+            />
+          </v-col>
+
+        </v-row>
+
+        <v-row>
+          <v-col
+            cols="12"
+            md="3"
+          >
+            <vuetify-money
+              v-model="ModelPorc1"
+              v-bind:label="label_porc1"
+              v-bind:placeholder="placeholder_porc1"
+              v-bind:readonly="false"
+              v-bind:disabled="false"
+              v-bind:outlined="false"
+              v-bind:clearable="true"
+              v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+              v-bind:options="options"
+              v-bind:properties="properties"
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="3"
+          >
+            <vuetify-money
+              v-model="ModelPorc2"
+              v-bind:label="label_porc2"
+              v-bind:placeholder="placeholder_porc2"
+              v-bind:readonly="false"
+              v-bind:disabled="false"
+              v-bind:outlined="false"
+              v-bind:clearable="true"
+              v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+              v-bind:options="options"
+              v-bind:properties="properties"
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="3"
+          >
+            <vuetify-money
+              v-model="ModelPorc3"
+              v-bind:label="label_porc3"
+              v-bind:placeholder="placeholder_porc3"
+              v-bind:readonly="false"
+              v-bind:disabled="false"
+              v-bind:outlined="false"
+              v-bind:clearable="true"
+              v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+              v-bind:options="options"
+              v-bind:properties="properties"
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="3"
+          >
+            <vuetify-money
+              v-model="ModelPorc4"
+              v-bind:label="label_porc4"
+              v-bind:placeholder="placeholder_porc4"
+              v-bind:readonly="false"
+              v-bind:disabled="false"
+              v-bind:outlined="false"
+              v-bind:clearable="true"
+              v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+              v-bind:options="options"
+              v-bind:properties="properties"
+            />
+          </v-col>
+
+        </v-row>
+
+        <v-row>
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-select
+              v-model="ModelPresentationSale"
+              dense
+              clearable
+              label="Presentacion Venta"
+              item-text="desc_pres"
+              item-value="id"
+              :items="cboPresentation"
+              @change="DropDownPresentation">
+            </v-select>
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="2"
+          >
+            <v-text-field
+              :counter="10"
+              v-model="ModelCapacitySale"
+              label="Capacidad Venta"
+              required
+            ></v-text-field>
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="4"
+          >
+            <v-select
+              v-model="ModelPresentationPurchase"
+              dense
+              clearable
+              label="Presentacion Compra"
+              item-text="desc_pres"
+              item-value="id"
+              :items="cboPresentation"
+              @change="DropDownPresentation">
+            </v-select>
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="2"
+          >
+            <v-text-field
+              v-model="ModelCapacityPurchase"
+              :counter="10"
+              label="Capacidad Compra"
+              required
+            ></v-text-field>
+          </v-col>
 
 
-          <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-                md="3"
-              >
-                <vuetify-money
-                  v-model="ModelPrecArti"
-                  v-bind:label="label_preca"
-                  v-bind:placeholder="placeholder_preca"
-                  v-bind:readonly="false"
-                  v-bind:disabled="false"
-                  v-bind:outlined="false"
-                  v-bind:clearable="true"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="options"
-                  v-bind:properties="properties"
-                />
-              </v-col>
+        </v-row>
 
-              <v-col
-                cols="12"
-                md="3"
-              >
-                <vuetify-money
-                  v-model="ModelPorc1"
-                  v-bind:label="label_porc1"
-                  v-bind:placeholder="placeholder_porc1"
-                  v-bind:readonly="false"
-                  v-bind:disabled="false"
-                  v-bind:outlined="false"
-                  v-bind:clearable="true"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="options"
-                  v-bind:properties="properties"
-                />
-              </v-col>
+        <v-row>
+          <v-col cols="4">
+            <v-switch
+              v-model="ModelExempt"
+              label="Exento"
+              color="primary"
+              hide-details
+            ></v-switch>
+          </v-col>
+          <v-col cols="2">
+            <v-switch
+              v-model="ModelProceeds"
+              label="Procede"
+              color="primary"
+              hide-details
+            ></v-switch>
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="ModelIva"
+              :rules="[(v) => !!v || 'Debe Seleccionar un Valor IVA es Requerida']"
+              dense
+              clearable
+              label="IVA"
+              item-text="desc_ivag"
+              item-value="id"
+              :items="cboIva"
+              @change="DropDownIva">
+            </v-select>
+          </v-col>
+        </v-row>
 
-              <v-col
-                cols="12"
-                md="3"
-              >
-                <vuetify-money
-                  v-model="ModelPorc2"
-                  v-bind:label="label_porc2"
-                  v-bind:placeholder="placeholder_porc2"
-                  v-bind:readonly="false"
-                  v-bind:disabled="false"
-                  v-bind:outlined="false"
-                  v-bind:clearable="true"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="options"
-                  v-bind:properties="properties"
-                />
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="3"
-              >
-                <vuetify-money
-                  v-model="ModelPorc3"
-                  v-bind:label="label_porc3"
-                  v-bind:placeholder="placeholder_porc3"
-                  v-bind:readonly="false"
-                  v-bind:disabled="false"
-                  v-bind:outlined="false"
-                  v-bind:clearable="true"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="options"
-                  v-bind:properties="properties"
-                />
-              </v-col>
-
-            </v-row>
-          </v-container>
-
-           <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-                md="4"
-              >
-                <v-select
-                  v-model="ModelPresentationSale"
-                  dense
-                  clearable
-                  label="Presentacion Venta"
-                  item-text="desc_pres"
-                  item-value="id"
-                  :items="cboPresentation"
-                  @change="DropDownPresentation">
-                </v-select>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  :counter="10"
-                  v-model="ModelCapacitySale"
-                  label="Capacidad Venta"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="4"
-              >
-                <v-select
-                  v-model="ModelPresentationPurchase"
-                  dense
-                  clearable
-                  label="Presentacion Compra"
-                  item-text="desc_pres"
-                  item-value="id"
-                  :items="cboPresentation"
-                  @change="DropDownPresentation">
-                </v-select>
-              </v-col>
-
-              <v-col
-                cols="12"
-                md="2"
-              >
-                <v-text-field
-                  v-model="ModelCapacityPurchase"
-                  :counter="10"
-                  label="Capacidad Compra"
-                  required
-                ></v-text-field>
-              </v-col>
-
-
-            </v-row>
-          </v-container>
-
-        <v-container>
-          <v-row>
-            <v-col cols="6" md="2">
-              <v-switch
-                v-model="ModelExempt"
-                label="Exento"
-                color="primary"
-                hide-details
-              ></v-switch>
-            </v-col>
-            <v-col cols="6" md="2">
-              <v-switch
-                v-model="ModelProceeds"
-                label="Procede"
-                color="primary"
-                hide-details
-              ></v-switch>
-            </v-col>
-          </v-row>
-        </v-container>
-          <v-row>
-            <v-col cols="6" md="6">
-               <v-select
-                v-model="ModelFamily"
-                :rules="[(v) => !!v || 'Debe Seleccionar una Categoria es Requerida']"
-                dense
-                clearable
-                label="Categoria"
-                item-text="desc_fami"
-                item-value="id"
-                :items="cbofamily"
-                @change="selectedFamily"
-                >
-              </v-select>
-            </v-col>
-            <v-col cols="6" md="6">
+        <v-row>
+          <v-col cols="6" md="6">
               <v-select
-                v-model="ModelSubFamily"
-                :rules="[(v) => !!v || 'Debe Seleccionar una Sub-Categoria es Requerida']"
-                dense
-                clearable
-                label="Sub-Categoria"
-                item-text="desc_sufa"
-                item-value="id"
-                :items="cbosubfamily"
-                >
-              </v-select>
-            </v-col>
-          </v-row>
-        <v-container>
+              v-model="ModelFamily"
+              :rules="[(v) => !!v || 'Debe Seleccionar una Categoria es Requerida']"
+              dense
+              clearable
+              label="Categoria"
+              item-text="desc_fami"
+              item-value="id"
+              :items="cbofamily"
+              @change="selectedFamily"
+              >
+            </v-select>
+          </v-col>
+          <v-col cols="6" md="6">
+            <v-select
+              v-model="ModelSubFamily"
+              :rules="[(v) => !!v || 'Debe Seleccionar una Sub-Categoria es Requerida']"
+              dense
+              clearable
+              label="Sub-Categoria"
+              item-text="desc_sufa"
+              item-value="id"
+              :items="cbosubfamily"
+              >
+            </v-select>
+          </v-col>
+        </v-row>
 
-        </v-container>
-
-        <v-list-item-title class="text-h7 mb-2">
-          <v-select
-            v-model="ModelIva"
-            :rules="[(v) => !!v || 'Debe Seleccionar un Valor IVA es Requerida']"
-            dense
-            clearable
-            label="IVA"
-            item-text="desc_ivag"
-            item-value="id"
-            :items="cboIva"
-            @change="DropDownIva">
-          </v-select>
-        </v-list-item-title>
-        
          <v-list-item-title class="text-h7 mb-1">
           <template>
             <v-carousel>
@@ -414,8 +433,7 @@
   export default {
     mixins: [validationMixin],
     validations: {
-      description: { required, maxLength: maxLength(200) },
-      abbreviation:{ maxLength :maxLength(3)},
+      description: { required, maxLength: maxLength(250) },
     },
 
     data:() =>({
@@ -429,6 +447,7 @@
       ModelId:'',
       ModelCodebar:'',
       ModelCode:'',
+      ModelCodeIdae:'',
       ModelMinimumAmount:1,
       ModelMaximumAmount:9999999,
       optgroups: false,
@@ -460,15 +479,18 @@
       ModelPorc1: "1.00",
       ModelPorc2: "1.00",
       ModelPorc3: "1.00",
+      ModelPorc4: "1.00",
       ModelPrecArti: "1,00",
-      label_preca: "Precio",
-      placeholder_preca: "Precio",
+      label_preca: "Costo",
+      placeholder_preca: "Costo",
       label_porc1: "Porcentaje 1",
       placeholder_porc1: "Porcentaje 1",
       label_porc2: "Porcentaje 2",
       placeholder_porc2: "Porcentaje 2",
       label_porc3: "Porcentaje 3",
       placeholder_porc3: "Porcentaje 3",
+      label_porc4: "Porcentaje 4",
+      placeholder_porc4: "Porcentaje 4",
       valueWhenIsEmpty: "",
       options: {
         locale: "en-US",
@@ -563,12 +585,14 @@
         this.ModelCode = ''
         this.Modeldescription = ''
         this.ModelCodebar = ''
+        this.ModelCodeIdae = '',
         this.ModelMinimumAmount = ''
         this.ModelMaximumAmount = ''
         this.ModelPrecArti = ''
         this.ModelPorc1 = ''
         this.ModelPorc2 = ''
         this.ModelPorc3 = ''
+        this.ModelPorc4 = ''
         this.ModelPresentationSale = ''
         this.ModelCapacitySale = ''
         this.ModelPresentationPurchase = ''
@@ -615,6 +639,7 @@
           por1_arti : this.ModelPorc1,
           por2_arti : this.ModelPorc2,
           por3_arti : this.ModelPorc3,
+          por4_arti : this.ModelPorc4,
           ppre_arti : this.ModelPrecArti,
           exgr_arti : this.ModelExempt == true ? "E": "G",
           codc_pres : this.ModelPresentationPurchase,
@@ -739,6 +764,7 @@
           //console.log(this.ModelArticle);
           this.ModelId                    = this.ModelArticle.id;
           this.ModelCode                  = this.ModelArticle.codi_arti;
+          this.ModelCodeIdae              = this.ModelArticle.idae_arti;
           this.Modeldescription           = this.ModelArticle.desc_arti;
           this.ModelCodebar               = this.ModelArticle.coba_arti;
           this.ModelMinimumAmount         = this.ModelArticle.cmin_arti;
@@ -747,6 +773,7 @@
           this.ModelPorc1                 = this.ModelArticle.por1_arti;
           this.ModelPorc2                 = this.ModelArticle.por2_arti;
           this.ModelPorc3                 = this.ModelArticle.por3_arti;
+          this.ModelPorc4                 = this.ModelArticle.por4_arti;
           this.ModelPresentationSale      = this.ModelArticle.codv_pres;
           this.ModelCapacitySale          = this.ModelArticle.capv_arti;
           this.ModelPresentationPurchase  = this.ModelArticle.codc_pres;
