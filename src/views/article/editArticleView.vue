@@ -22,11 +22,10 @@
               <v-col cols="4">
                 <v-text-field
                   v-model="ModelCode"
-                  :rules="[(v) => !!v || 'Codigo del Articulo es Requerido']"
+                  :rules="[(v) => !!v || 'Codigo SIAE es Requerido']"
                   label="Codigo SIAE*"
                   counter="50"
                   required
-                  readonly
                   :maxlength="maxLengthCode"
                   ref="txtcode"
                 ></v-text-field>
@@ -35,11 +34,10 @@
               >
                 <v-text-field
                   v-model="ModelCodeIdae"
-                  :rules="[(v) => !!v || 'Codigo del Articulo es Requerido']"
+                  :rules="[(v) => !!v || 'Codigo del IDAE es Requerido']"
                   label="Codigo IDAE"
                   counter="15"
                   required
-                  readonly
                   :maxlength="maxLengthCode"
                   ref="txtcode"
                 ></v-text-field>
@@ -631,7 +629,7 @@
         
         const data_updated = {
           codi_arti : this.ModelCode,
-          idae_arti : this.ModelCode,
+          idae_arti : this.ModelCodeIdae,
           desc_arimagesti : this.Modeldescription,
           coba_arti : this.ModelCodebar,
           cmin_arti : this.ModelMinimumAmount,
