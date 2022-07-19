@@ -4,7 +4,7 @@ class ArticleDataService {
 
   getAll(page,itemsPerPage) {
     if(page !== 'undefined' || page !=='null'){
-      return http.get("/articulo?page_size="+itemsPerPage+"&page="+page);
+      return http.get("/articulo?page_size="+itemsPerPage+"&page="+page+"&ordering=-id");
     }else{
       return http.get("/articulo");
     }

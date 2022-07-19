@@ -543,10 +543,10 @@
         this.ModelProceeds =''
       },
       valid_form(){
-        if(this.ModelCode.length<5){
+        if(this.ModelCode.length<3){
           return false;
         }
-        if(this.Modeldescription.length<4){
+        if(this.Modeldescription.length<3){
           return false;
         }
 
@@ -570,7 +570,7 @@
 
         const data_save = {
           codi_arti : this.ModelCode,
-          idae_arti : this.ModelCode,
+          idae_arti : this.ModelCodeIdae,
           desc_arti : this.Modeldescription,
           coba_arti : this.ModelCodebar,
           cmin_arti : this.ModelMinimumAmount,
