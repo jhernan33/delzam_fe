@@ -23,7 +23,8 @@
       class="pa-5"
       >
     </v-text-field>
-    <v-btn class="pa-2" append-icon="mdi-magnify" @click="searchFamily">
+    <v-switch label="Borrados" v-model="ModelDeleted" @click="searchArticle"></v-switch><v-spacer></v-spacer>
+    <v-btn class="pa-2" append-icon="mdi-magnify" @click="searchArticle">
       <v-icon color="error">mdi-archive-search</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
@@ -91,6 +92,7 @@ export default {
       sortDesc:false,
       subfamily: [],
       search: "",
+      ModelDeleted: false,
       page: 1,
       totalFamily: 0,
       numberOfPages: 0,
@@ -172,11 +174,13 @@ export default {
       if(this.search.length<1){
         this.clearSearch();
       }
-      this.searchFamily();
+      this.searchArticle();
     },
 
-    searchFamily() {
-      ArticleDataService.findByFamily(this.search)
+    searchArticle() {
+      let valueDeleted = false;
+      valueDeleted = this.ModelDeleted;
+      ArticleDataService.findByFamily(this.search,valueDeleted)
         .then((response) => {
           this.loading = true;
           this.subfamily = response.data.results.map(this.getDisplaySubFamily);

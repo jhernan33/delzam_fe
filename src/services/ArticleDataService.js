@@ -27,9 +27,9 @@ class ArticleDataService {
   }
 
 
-  findByFamily(search) {
+  findByFamily(search,Deleted) {
     if(search.length>0){
-      return http.get(`/articulo/?search=${search}&page_size=15`);
+      return http.get(`/articulo/?search=${search}&page_size=15&show=${Deleted}`);
     }
     return http.get(`/articulo/`);
   }
