@@ -10,8 +10,8 @@ class ArticleDataService {
     }
   }
 
-  get(id) {
-    return http.get(`/articulo/${id}`);
+  get(id,deleted) {
+    return http.get(`/articulo/${id}?show=${deleted}`);
   }
 
   create(data) {
