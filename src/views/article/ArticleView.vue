@@ -23,7 +23,7 @@
       class="pa-5"
       >
     </v-text-field>
-    <v-switch label="Borrados" v-model="ModelDeleted" @click="searchArticle"></v-switch><v-spacer></v-spacer>
+    <v-switch label="Eliminados" v-model="ModelDeleted" @click="searchArticle"></v-switch><v-spacer></v-spacer>
     <v-btn class="pa-2" append-icon="mdi-magnify" @click="searchArticle">
       <v-icon color="error">mdi-archive-search</v-icon>
     </v-btn>
@@ -194,7 +194,15 @@ export default {
     },
 
     modiFamily(id) {
-      this.$router.push({ name: "editarticle", params: { id: id } });
+      let borr = this.ModelDeleted;
+      this.$router.push({ name: "editarticle", params: { id: id, state:borr } });
+      // this.$router.push({
+      //   name:"editarticle",
+      //   query: {
+      //     id: id,
+      //     state:borr
+      //   }
+      // });
     },
 
     getDisplaySubFamily(Object) {

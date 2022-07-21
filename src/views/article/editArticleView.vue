@@ -15,8 +15,9 @@
             class="hidden-xs-only">
             <v-icon x-large color="error">mdi-arrow-left-thin-circle-outline</v-icon>
           </v-btn>
-          Editar Articulo
+          Editar Articulo 
         </div>
+        <v-switch label="Borrado" v-model="ModelDeleted"></v-switch><v-spacer></v-spacer>
         <v-list-item-title class="text-h7 mb-1">
             <v-row>
               <v-col cols="4">
@@ -461,6 +462,7 @@
       ModelCapacityPurchase:'',
       ModelExempt:'',
       ModelProceeds:'',
+      ModelDeleted:'false',
       maxLengthDescription:200,
       maxLengthAbbreviation:3,
       maxLengthCode:15,
@@ -503,7 +505,7 @@
 
     }),
     mounted(){
-      this.getArticle(this.$route.params.id);
+      this.getArticle(this.$route.params.id, this.$route.params.state);
       this.DropDownFamily();
       this.DropDownIva();
       this.DropDownPresentation();
@@ -599,6 +601,7 @@
         this.ModelIva = ''
         this.ModelExempt =''
         this.ModelProceeds =''
+        this.ModelDeleted = 'false'
       },
       valid_form(){
         if(this.ModelCode.length<3){
@@ -630,7 +633,7 @@
         const data_updated = {
           codi_arti : this.ModelCode,
           idae_arti : this.ModelCodeIdae,
-          desc_arimagesti : this.Modeldescription,
+          desc_arti : this.Modeldescription,
           coba_arti : this.ModelCodebar,
           cmin_arti : this.ModelMinimumAmount,
           cmax_arti : this.ModelMaximumAmount,
@@ -648,6 +651,7 @@
           codi_sufa : this.ModelSubFamily,
           codi_ivti : this.ModelIva,
           foto_arti : this.arrayImages,
+          erased : this.ModelDeleted,
         };
 
         //console.log("Data Save==>"+JSON.stringify(data_updated));
@@ -754,8 +758,8 @@
        * Search Article
        * @param {*} id 
        */
-      getArticle(id){
-        ArticleDataService.get(id)
+      getArticle(id,state){
+        ArticleDataService.get(id,state)
         .then(response => {
           //console.log(response.data.data);
           this.ModelArticle = response.data.data;
@@ -786,6 +790,7 @@
           this.setArrayImages(this.ModelArticle.foto_arti);
           this.ModelArrayImages           = this.arrayImages;
           this.ModelDeleteImages          = [{'id':1, value:true},{'id':2, value:false},{'id':3, value:false},{'id':4, value:false},{'id':5, value:false},{'id':6, value:false},{'id':7, value:false}];
+          this.ModelDeleted               = this.ModelArticle.deleted;
         })
         .catch(e => {
           console.log(e);
